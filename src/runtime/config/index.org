@@ -1,0 +1,17 @@
+#+TITLE: The =config= Package
+#+AUTHOR: VLEAD
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+The =config= package holds one module
+
+ - =config=
+
+
+* Tangle :boilerplate:
+#+BEGIN_SRC python :eval no :tangle __init__.py
+print "config package"
+
+#+END_SRC

@@ -1,0 +1,22 @@
+#+TITLE: Runtime of Application
+#+AUTHOR: VLEAD
+#+SETUPFILE: ../org-templates/level-1.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+The =runtime= of the application is defined by:
+
+ - =REST API=
+
+ - =System=
+
+ - =Config=
+
+ - =Exceptions=
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle __init__.py
+print "runtime package"
+
+#+END_SRC

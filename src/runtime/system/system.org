@@ -1,0 +1,61 @@
+#+TITLE: Translators System
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* The =System= class
+  There is only one =system= in the application.
+
+** Constructor
+   The system cannot be initialized.
+
+#+NAME: class_system
+#+BEGIN_SRC python
+class System():
+
+    def __init__(self):
+        pass
+
+
+#+END_SRC
+
+** Methods
+   The methods are use manipulate the files and directories
+
+#+NAME: methods_system
+#+BEGIN_SRC python
+    @staticmethod
+    def create_file(filename, path):
+        norm_file = os.path.normpath(path+"/"+filename)
+        norm_path = os.path.normpath(path)
+        if os.path.isdir(norm_path) and not os.path.isfile(norm_file):
+            file_object = open(norm_file, "w")
+            file_object.write("This is the " + filename + " file.")
+            file_object.close()
+
+
+
+    @staticmethod
+    def create_dir(dirname, path):
+        norm_dir = os.path.normpath(path+"/"+dirname)
+        norm_path = os.path.normpath(path)
+        if os.path.isdir(norm_path) and not os.path.isdir(norm_dir):
+            os.mkdir(norm_dir)
+#+END_SRC
+
+** Imports
+   The system requires access to the os library
+#+NAME: imports_system
+#+BEGIN_SRC python
+import os
+#+END_SRC
+
+* Tangling                                                      :boilerplate:
+#+BEGIN_SRC python :tangle system.py :eval no :noweb yes
+<<imports_system>>
+<<class_system>>
+<<methods_system>>
+#+END_SRC

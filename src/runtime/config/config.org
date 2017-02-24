@@ -1,0 +1,53 @@
+#+title: Configuration Parameters
+#+AUTHOR: VLEAD
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Introduction
+
+This holds the application's configuration parameters.
+#+NAME: class_config
+#+BEGIN_SRC python
+class Config:
+
+# Set temporary path to create the output directories
+    SYSTEMPATH = "."
+    
+# use Exceptions module here to show
+# "Cannot initialize error"
+    def __init__(self):
+        pass
+
+#+END_SRC
+
+* Flask Application Configuration
+  Configuration for the flask application.
+#+NAME: flask_app_config
+#+BEGIN_SRC python
+# List of allowed origins for CORS
+ALLOWED_ORIGINS = "['*']"
+
+# List of allowed IPs
+WHITELIST_IPS = ["127.0.0.1"]
+
+# Configure your log paths
+LOG_FILE_DIRECTORY = 'logs'
+LOG_FILE = 'translators.log'
+
+# Log level for the application
+# 10=DEBUG, 20=INFO, 30=WARNING, 40=ERROR, 50=CRITICAL
+LOG_LEVEL = 10
+#+END_SRC
+
+* Tangle
+ * System Configuration
+#+BEGIN_SRC python :tangle config.py :eval no :noweb yes
+<<class_config>>
+#+END_SRC
+
+ * flask_app_config
+#+BEGIN_SRC python :tangle flask_app_config.py :eval no :noweb yes
+<<flask_app_config>>
+#+END_SRC

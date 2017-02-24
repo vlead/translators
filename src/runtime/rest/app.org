@@ -1,0 +1,58 @@
+#+TITLE: The Flask web server
+#+AUTHOR: VLEAD
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Introduction
+  The web server for the translators application
+
+* Flask server
+#+NAME: server
+#+BEGIN_SRC python
+def create_app(config):
+    # initialise app
+    app = Flask(__name__,
+                static_folder="",
+                template_folder="")
+    app.config.from_object(config)
+    # cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
+    app.register_blueprint(api)
+    # configure_logging()
+    # configure_error_handlers()
+    # configure_system()
+
+    return app
+#+END_SRC
+
+* imports
+#+NAME: imports_server
+#+BEGIN_SRC python
+import os
+from flask import Flask, jsonify, make_response
+from flask_cors import CORS, cross_origin
+
+# Need to change the root PYTHONPATH during runtime
+from runtime.rest import api
+
+# Need to change the root PYTHONPATH during runtime
+from runtime.config import flask_app_config as config
+
+#+END_SRC
+
+* Run server
+#+NAME: run_server
+#+BEGIN_SRC python
+if __name__ == "__main__":
+    app = create_app(config)
+    # Need to modify host for production and testing
+    app.run(debug=True, host='0.0.0.0', threaded=True)
+#+END_SRC
+
+* Tangle
+#+BEGIN_SRC python :tangle app.py :eval no :noweb yes
+<<imports_server>>
+<<server>>
+<<run_server>>
+#+END_SRC

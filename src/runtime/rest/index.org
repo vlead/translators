@@ -1,0 +1,19 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Introduction
+  The REST package holds two modules
+
+  - =app=
+
+  - =api=
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle __init__.py
+print("rest package")
+#+END_SRC

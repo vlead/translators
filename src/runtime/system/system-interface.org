@@ -1,0 +1,54 @@
+#+TITLE: System Interface implementation for translators
+#+AUTHOR: VLEAD
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Introduction
+  System Interface is the glue between the =rest= and =system=.  The world of
+  =rest= uses =json= and the world of =system= uses objects. System Interface
+  allows these two worlds to talk to each other.
+
+* The =SystemInterface= class
+
+** Constructor
+#+NAME: class_system_interface
+#+BEGIN_SRC python
+class SystemInterface():
+
+    # Should not create an instance of system interface
+    def __init__(self):
+        pass
+
+#+END_SRC
+
+** Methods
+
+#+NAME: methods_system_interface
+#+BEGIN_SRC python
+    @staticmethod
+    def create_experiment(experiment_dict):
+        System.create_dir(experiment_dict['id'], Config.SYSTEMPATH)
+        # System.create_file(experiment_dict['id']+"/makefile", Config.SYSTEMPATH) # check makefile contents
+        System.create_file(experiment_dict['id'] + "/README.org", Config.SYSTEMPATH)
+        System.create_dir(experiment_dict['id'] + "/src", Config.SYSTEMPATH)
+        for section in experiment_dict['sections']:
+            System.create_file(experiment_dict['id'] + "/src/" + section + ".org", Config.SYSTEMPATH)
+            
+#+END_SRC
+
+** Imports
+#+NAME: imports_system_inteface
+#+BEGIN_SRC python
+from runtime.system.system import System
+from runtime.config.config import Config
+
+#+END_SRC
+
+* Tangling
+#+BEGIN_SRC python :tangle system_interface.py :eval no :noweb yes
+<<imports_system_interface>>
+<<class_system_interface>>
+<<methods_system_interface>>
+#+END_SRC
