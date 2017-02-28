@@ -34,7 +34,7 @@ from flask import Flask, jsonify, make_response
 from flask_cors import CORS, cross_origin
 
 # Need to change the root PYTHONPATH during runtime
-from runtime.rest import api
+from runtime.rest.api import api
 
 # Need to change the root PYTHONPATH during runtime
 from runtime.config import flask_app_config as config

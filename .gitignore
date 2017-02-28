@@ -2,3 +2,5 @@
 dev_code/
 build/
 elisp/
+src/org-templates/
+src/style/
