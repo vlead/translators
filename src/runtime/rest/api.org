@@ -84,7 +84,7 @@ from flask import Blueprint, session, request, make_response, \
     jsonify, url_for, abort
 
 # Need to change the root PYTHONPATH during runtime
-runtime.system.system_interface import *
+from runtime.system.system_interface import *
 
 #+END_SRC
 
