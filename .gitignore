@@ -4,3 +4,4 @@ build/
 elisp/
 src/org-templates/
 src/style/
+.PAT
