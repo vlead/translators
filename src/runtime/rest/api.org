@@ -69,10 +69,10 @@ def create_experiment():
         try:
             SystemInterface.create_experiment(experiment_dict)
             # Modify this response
-            return make_response("OK", 200)
+            return make_response("success: OK", 200, None)
         except:
             # Modify this response
-            return make_response("NOT OK")
+            return make_response("error: Invalid Lab Spec", 400, None)
 
 #+END_SRC
 

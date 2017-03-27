@@ -7,7 +7,8 @@
 #+OPTIONS: ^:nil
 
 * The =System= class
-  There is only one =system= in the application.
+  There is only one =System= in the application. This =System= interacts with
+  the Github API and generates the experiment structure on the remote server.
 
 ** Constructor
    The system cannot be initialized.
@@ -16,9 +17,10 @@
 #+BEGIN_SRC python
 class System():
 
+    # use exceptions to raise error
+    # "cannot initialise error"
     def __init__(self):
         pass
-
 
 #+END_SRC
 
@@ -28,32 +30,44 @@ class System():
 #+NAME: methods_system
 #+BEGIN_SRC python
     @staticmethod
-    def create_file(filename, path):
-        norm_file = os.path.normpath(path+"/"+filename)
-        norm_path = os.path.normpath(path)
-        if os.path.isdir(norm_path) and not os.path.isfile(norm_file):
-            file_object = open(norm_file, "w")
-            file_object.write("This is the " + filename + " file.")
-            file_object.close()
-
-
+    def get_user():
+        return Github(Config.USER_KEY).get_user()
 
     @staticmethod
-    def create_dir(dirname, path):
-        norm_dir = os.path.normpath(path+"/"+dirname)
-        norm_path = os.path.normpath(path)
-        if os.path.isdir(norm_path) and not os.path.isdir(norm_dir):
-            os.mkdir(norm_dir)
+    def get_org(user):
+        for org in user.get_orgs():
+            if org.id = Config.ORG_ID:
+                return org
+
+    @staticmethod
+    def create_repo(org, name):
+        org.create_repo(name)
+
+    @staticmethod
+    def get_repo(org, name):
+        for repo in org.get_repos():
+            if repo.name == name:
+                return repo
+
+    @staticmethod
+    def create_file(repo, new_file, path):
+        file_path = path + "/" + new_file
+        file_content = "This is the " + new_file + " file"
+        repo.create_file(file_path, new_file + " file", file_content)
+
 #+END_SRC
 
 ** Imports
    The system requires access to the os library
 #+NAME: imports_system
 #+BEGIN_SRC python
-import os
+from runtime.config.config import Config
+
+from github import Github
+
 #+END_SRC
 
-* Tangling                                                      :boilerplate:
+* Tangle                                                        :boilerplate:
 #+BEGIN_SRC python :tangle system.py :eval no :noweb yes
 <<imports_system>>
 <<class_system>>

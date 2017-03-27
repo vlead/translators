@@ -7,13 +7,13 @@
 
 The =runtime= of the application is defined by:
 
- - =REST API=
+ - [[./rest/index.org][=REST API=]]
 
- - =System=
+ - [[./system/index.org][=System=]]
 
- - =Config=
+ - [[./config/index.org][=Config=]]
 
- - =Exceptions=
+ - [[./exceptions/index.org][=Exceptions=]]
 
 * Tangle
 #+BEGIN_SRC python :eval no :tangle __init__.py

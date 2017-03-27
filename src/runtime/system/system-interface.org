@@ -10,7 +10,7 @@
   =rest= uses =json= and the world of =system= uses objects. System Interface
   allows these two worlds to talk to each other.
 
-* The =SystemInterface= class
+* The =System Interface= class
 
 ** Constructor
 #+NAME: class_system_interface
@@ -28,13 +28,17 @@ class SystemInterface():
 #+NAME: methods_system_interface
 #+BEGIN_SRC python
     @staticmethod
-    def create_experiment(experiment_dict):
-        System.create_dir(experiment_dict['id'], Config.SYSTEMPATH)
-        # System.create_file(experiment_dict['id']+"/makefile", Config.SYSTEMPATH) # check makefile contents
-        System.create_file(experiment_dict['id'] + "/README.org", Config.SYSTEMPATH)
-        System.create_dir(experiment_dict['id'] + "/src", Config.SYSTEMPATH)
+    def create_experiment(experiment_dict, content_type):
+        user = System.get_user()
+        org = System.get_org(user)
+        repo_name = experiment_dict['name'] + " - " + experiment_dict['id']
+        System.create_repo(org, repo_name)
+        repo = System.get_repo(org, repo_name)
+        # add makefile here
+        # check makefile contents
+        System.create_file(repo, "README." + content_type, ".")
         for section in experiment_dict['sections']:
-            System.create_file(experiment_dict['id'] + "/src/" + section + ".org", Config.SYSTEMPATH)
+            System.create_file(repo, section + "." + content_type, "/src")
             
 #+END_SRC
 
@@ -42,11 +46,11 @@ class SystemInterface():
 #+NAME: imports_system_inteface
 #+BEGIN_SRC python
 from runtime.system.system import System
-from runtime.config.config import Config
 
 #+END_SRC
 
-* Tangling
+
+* Tangle :boilerplate:
 #+BEGIN_SRC python :tangle system_interface.py :eval no :noweb yes
 <<imports_system_interface>>
 <<class_system_interface>>

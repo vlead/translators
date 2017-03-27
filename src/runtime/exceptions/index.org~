@@ -1,0 +1,16 @@
+#+TITLE: The =Exceptions= Package
+#+AUTHOR: VLEAD
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+The =Exceptions= package holds the custom exceptions.
+
+1. [[./custom_exceptions.org][=Custom Exceptions=]]
+
+* Tangle                          :boilerplate:
+#+BEGIN_SRC python :eval no :tangle __init__.py
+print("Exceptions package")
+
+#+END_SRC

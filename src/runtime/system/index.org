@@ -7,11 +7,13 @@
 
 * Introduction
   This package contains the following
-  - =System=
+
+  - [[./system.org][=System=]]
   
-  - =SystemInterface=
+  - [[./system-interface.org][=System Interface=]]
 
 * Tangle
 #+BEGIN_SRC python :eval no :tangle __init__.py
-print("system package")
+print("System package")
+
 #+END_SRC
