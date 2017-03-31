@@ -1,0 +1,28 @@
+#+TITLE: The Translator Module
+#+AUTHOR: VLEAD
+#+SETUPFILE: ./org-templates/level-0.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Introduction
+  The Translators module is a micro-service part of the VLabs platform
+  [[https://github.com/vlead/vlabs-platform/blob/refactoring/src/design/index.org][=design=]]. The module works as skeleton generator for an experiment.
+
+* Design of the application
+  The Translators app accepts a lab specification for an experiment through
+  its [[./runtime/rest/index.org][=REST=]] interface. The [[./runtime/rest/index.org][=REST=]] module interacts with the [[./runtime/system/index.org][=system=]] module
+  through the system interface and generates a version controlled experiment on
+  a remote Github server.
+
+* Components of the application directory
+
+  - [[./deployment/index.org][=deployment=]]
+
+  - [[./runtime/index.org][=runtime=]]
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle __init__.py
+print("Translators package")
+
+#+END_SRC

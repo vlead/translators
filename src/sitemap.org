@@ -1,5 +1,7 @@
 #+TITLE: Sitemap for project org-docs
 
+   + deployment
+     + [[file:deployment/index.org][Deploying the application on a server]]
    + org-templates
      + [[file:org-templates/level-0.org][level-0]]
      + [[file:org-templates/level-1.org][level-1]]
@@ -9,7 +11,10 @@
    + runtime
      + config
        + [[file:runtime/config/config.org][Configuration Parameters]]
-       + [[file:runtime/config/index.org][The =config= Package]]
+       + [[file:runtime/config/index.org][The =Config= Package]]
+     + exceptions
+       + [[file:runtime/exceptions/custom_exceptions.org][Custom Exceptions]]
+       + [[file:runtime/exceptions/index.org][The =Exceptions= Package]]
      + rest
        + [[file:runtime/rest/index.org][REST Interface for translators]]
        + [[file:runtime/rest/app.org][The Flask web server]]

@@ -31,22 +31,24 @@ def index(request):
     
     - URL :: /create_experiment
     - METHOD :: POST
-    - BODY ::
+    - PAYLOAD ::
          #+BEGIN_EXAMPLE
 {
-        "id": "e99847",
-        "name": "Parallel and distributed processing",
-        "overview": "This deals with eiciting how parallel and distributed processing is done",
-        "sections" : [
-                   "Introduction",
-                   "Objective",
-                   "Tutorial",
-                   "Illustration",
-                   "Procedure",
-                   "Experiment",
-                   "Observations",
-                   "Assignment",
-                   "References"]
+        "experiment" : {
+                     "id": "e99847",
+                     "name": "Parallel and distributed processing",
+                     "overview": "This deals with eiciting how parallel and distributed processing is done",
+                     "sections" : [
+                                "Introduction",
+                                "Objective",
+                                "Tutorial",
+                                "Illustration",
+                                "Procedure",
+                                "Experiment",
+                                "Observations",
+                                "Assignment",
+                                "References"]},
+        "content-type": "org"
 }
          #+END_EXAMPLE
     - SUCCESS Response :: 200 OK
@@ -61,13 +63,14 @@ def create_experiment():
         data_json = json.dumps(request.get_json())
         data_dict = yaml.safe_load(data_json)
         experiment_dict = {
-            'id': data_dict['id'],
-            'name': data_dict['name'],
-            'overview': data_dict['overview'],
-            'sections': data_dict['sections']
+            'id': data_dict['experiment']['id'],
+            'name': data_dict['experiment']['name'],
+            'overview': data_dict['experiment']['overview'],
+            'sections': data_dict['experiment']['sections']
         }
+        content = data_dict['content-type']
         try:
-            SystemInterface.create_experiment(experiment_dict)
+            SystemInterface.create_experiment(experiment_dict, content)
             # Modify this response
             return make_response("success: OK", 200, None)
         except:
