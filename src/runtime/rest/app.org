@@ -28,7 +28,7 @@ def create_app(config):
 #+END_SRC
 
 * Logging
-#+NAME: logging
+#+NAME: configure_logging
 #+BEGIN_SRC python
 def configure_logging(app):
     import logging

@@ -17,16 +17,18 @@ api = Blueprint('APIs', __name__)
 
 #+END_SRC
 
+
 ** index
 #+NAME: index_route
 #+BEGIN_SRC python
 @api.route("/", methods=['GET'])
-def index(request):
+def index(request): # redirect to index.org of documentation
     pass
 
 #+END_SRC
 
-** Create an experiment
+
+** Create an experiment structure from specified format
 *** API design
     
     - URL :: /create_experiment
@@ -52,7 +54,7 @@ def index(request):
 }
          #+END_EXAMPLE
     - SUCCESS Response :: 200 OK
-    - ERROR Response :: 400 BAD REQUEST
+    - ERROR Response :: 400 Invalid Lab Spec
 
 *** =create_experiment= API
 #+NAME: create_experiment_route
@@ -71,6 +73,57 @@ def create_experiment():
         content = data_dict['content-type']
         try:
             SystemInterface.create_experiment(experiment_dict, content)
+            # Modify this response
+            return make_response("success: OK", 200, None)
+        except:
+            # Modify this response
+            return make_response("error: Invalid Lab Spec", 400, None)
+
+#+END_SRC
+
+
+** Create an OpenedX structure from specified format
+*** API design
+    
+    - URL :: /create_openedx_lab
+    - METHOD :: POST
+    - PAYLOAD ::
+         #+BEGIN_EXAMPLE
+{
+        "course": {"org": "IIIT-H","id": "CSE22", "display_name": "Artificial Neural Networks"},
+        "overview": "The objective of this lab is to provide hands-on experience in understanding the basics of ANN models, and the pattern recognition tasks they perform.",
+        "experiments": [{"id": "Intro", "name": "Introduction",
+                         "subsections": [{"name": "Introduction"}
+                                         ]},
+                         {"id": "E99847", "name": "Parallel and distributed processing - I: Interactive activation and competition models",
+                         "subsections": [{"name": "Objective"},
+                                         {"name": "Tutorial"},
+                                         {"name": "Illustration"},
+                                         {"name": "Procedure"},
+                                         {"name": "Experiment"},        
+                                         {"name": "Observations"},
+                                         {"name": "Assignment"},  
+                                         {"name": "References"} 
+                                         ]}
+                        ]
+}
+         #+END_EXAMPLE
+    - SUCCESS Response :: 200 OK
+    - ERROR Response :: 400 Invalid Lab Spec
+
+*** =create_openedx_lab= API
+#+NAME: create_experiment_route
+#+BEGIN_SRC python
+@api.route("/create_openedx_lab", methods=['POST'])
+def create_openedx_lab():
+    if request.method == 'POST':
+        data_json = request.get_json()
+        lab_dict = json.dumps(data_json)
+        lab_id = lab_dict['course']['id']
+        dname = lab_dict['course']['display_name'] # Assumming '-' separated name
+        labname = dname + lab_id
+        try:
+            SystemInterface.create_openedx_lab(labname, data_json)
             # Modify this response
             return make_response("success: OK", 200, None)
         except:

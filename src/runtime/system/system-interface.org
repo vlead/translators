@@ -39,13 +39,26 @@ class SystemInterface():
         System.create_file(repo, "README." + content_type, ".")
         for section in experiment_dict['sections']:
             System.create_file(repo, section + "." + content_type, "/src")
-            
+
+    @staticmethod
+    def create_openedx_lab(labname, data_json):
+        # Should be modified if the name can't be unique
+        filename = Config.LABSPEC
+        
+        System.gen_lab_dir(labname)
+        System.gen_json_file(data_json, filename)
+        System.execute_python(Config.OPENEDX_SCRIPT, [filename, Config.LABPATH+"/"+labname])
+        System.pack_lab(labname)
+        System.del_json_file(filename)
+        System.del_lab_dir(labname)
+
 #+END_SRC
 
 ** Imports
-#+NAME: imports_system_inteface
+#+NAME: imports_system_interface
 #+BEGIN_SRC python
 from runtime.system.system import System
+from runtime.config.config import Config
 
 #+END_SRC
 

@@ -21,6 +21,15 @@ class Config:
     # Github org URL
     ORG_URL = "https://github.com/test-platform-to-to-deleted/"
     
+    # Openedx script file
+    OPENEDX_SCRIPT = "../resources/automation.py"
+
+    # OpenedX labspec json file
+    LABSPEC = "labspec.json"
+
+    # Openedx lab path
+    LABPATH = "."
+
     # use Exceptions module here to show
     # "Cannot initialize error"
     def __init__(self):

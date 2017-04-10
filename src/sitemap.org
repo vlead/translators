@@ -24,3 +24,4 @@
        + [[file:runtime/system/index.org][The System Implementation of translators]]
        + [[file:runtime/system/system.org][Translators System]]
      + [[file:runtime/index.org][Runtime of Application]]
+   + [[file:index.org][The Translator Module]]

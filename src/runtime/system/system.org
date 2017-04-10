@@ -36,7 +36,7 @@ class System():
     @staticmethod
     def get_org(user):
         for org in user.get_orgs():
-            if org.id = Config.ORG_ID:
+            if org.id == Config.ORG_ID:
                 return org
 
     @staticmethod
@@ -55,6 +55,38 @@ class System():
         file_content = "This is the " + new_file + " file"
         repo.create_file(file_path, new_file + " file", file_content)
 
+    @staticmethod
+    def gen_json_file(json_dump, filename):
+        # The file created is temporary ?
+        with open(filename, 'w+') as fp:
+            json.dump(json_dump, fp)
+        
+    @staticmethod
+    def del_json_file(filename):
+        os.remove(filename)
+
+    @staticmethod
+    def gen_lab_dir(labname):
+        os.mkdir(Config.LABPATH+"/"+labname)
+
+    @staticmethod
+    def del_lab_dir(labname):
+        rmtree(Config.LABPATH+"/"+labname)
+
+    @staticmethod
+    def pack_lab(labname):
+        command = "tar -czf "
+        command += Config.LABPATH + "/" + labname + ".tar.gz "
+        command += Config.LABPATH + "/" + labname
+        os.system()
+    
+    @staticmethod
+    def execute_python(script, args):
+        command = "python " + script
+        for a in args:
+            command += " " + a
+        os.system(command)
+
 #+END_SRC
 
 ** Imports
@@ -64,6 +96,8 @@ class System():
 from runtime.config.config import Config
 
 from github import Github
+import os, json
+from shutil import rmtree
 
 #+END_SRC
 
