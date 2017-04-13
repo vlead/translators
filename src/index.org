@@ -15,11 +15,18 @@
   through the system interface and generates a version controlled experiment on
   a remote Github server.
 
+  The Translators app can also use the [[../openedx/index.org][=openedx=]] module and generate the lab
+  specification structure for openedx that can be deployed on the previous version of the
+  vlabs platform. The [[./system/index.org][=system=]] module executes the automated script of the
+  [[../openedx/index.org][=openedx=]] module and generates the lab structure specific to openedx.
+
 * Components of the application directory
 
   - [[./deployment/index.org][=deployment=]]
 
   - [[./runtime/index.org][=runtime=]]
+
+  - [[./openedx/index.org][=openedx=]]
 
 * Tangle
 #+BEGIN_SRC python :eval no :tangle __init__.py

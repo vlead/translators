@@ -60,10 +60,6 @@ class System():
         # The file created is temporary ?
         with open(filename, 'w+') as fp:
             json.dump(json_dump, fp)
-        
-    @staticmethod
-    def del_json_file(filename):
-        os.remove(filename)
 
     @staticmethod
     def gen_lab_dir(labname):
@@ -78,7 +74,7 @@ class System():
         command = "tar -czf "
         command += Config.LABPATH + "/" + labname + ".tar.gz "
         command += Config.LABPATH + "/" + labname
-        os.system()
+        os.system(command)
     
     @staticmethod
     def execute_python(script, args):

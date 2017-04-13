@@ -36,7 +36,7 @@ class SystemInterface():
         repo = System.get_repo(org, repo_name)
         # add makefile here
         # check makefile contents
-        System.create_file(repo, "README." + content_type, ".")
+        System.create_file(repo, "README." + content_type, "")
         for section in experiment_dict['sections']:
             System.create_file(repo, section + "." + content_type, "/src")
 
@@ -46,10 +46,9 @@ class SystemInterface():
         filename = Config.LABSPEC
         
         System.gen_lab_dir(labname)
-        System.gen_json_file(data_json, filename)
-        System.execute_python(Config.OPENEDX_SCRIPT, [filename, Config.LABPATH+"/"+labname])
+        System.gen_json_file(data_json, Config.LABPATH + "/" + labname + "/" + filename)
+        System.execute_python(Config.OPENEDX_SCRIPT, [os.path.abspath(Config.LABPATH+"/"+labname)])
         System.pack_lab(labname)
-        System.del_json_file(filename)
         System.del_lab_dir(labname)
 
 #+END_SRC
@@ -59,6 +58,7 @@ class SystemInterface():
 #+BEGIN_SRC python
 from runtime.system.system import System
 from runtime.config.config import Config
+import os
 
 #+END_SRC
 

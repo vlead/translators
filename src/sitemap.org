@@ -2,6 +2,25 @@
 
    + deployment
      + [[file:deployment/index.org][Deploying the application on a server]]
+   + openedx
+     + data-model
+       + [[file:openedx/data-model/index.org][Data Model for Content Delivery Adapters]]
+     + deployment
+       + [[file:openedx/deployment/index.org][Deploying the application on a server]]
+     + design
+       + [[file:openedx/design/index.org][Design of Content Delivery Adapters]]
+     + requirements
+       + [[file:openedx/requirements/index.org][Requirements for Content Delivery Adapters]]
+     + runtime
+       + open-edx-structure
+         + [[file:openedx/runtime/open-edx-structure/index.org][OpenedX Course Structure generator]]
+       + source-code-structure
+         + [[file:openedx/runtime/source-code-structure/hooks.org][Hooks]]
+         + [[file:openedx/runtime/source-code-structure/map.org][Map]]
+         + [[file:openedx/runtime/source-code-structure/fetch-content.org][Source Code Structure generator]]
+         + [[file:openedx/runtime/source-code-structure/index.org][Source Code Structure generator+]]
+       + [[file:openedx/runtime/index.org][Sturcture Generator]]
+     + [[file:openedx/index.org][Building a Content Delivery Adapters:  Ground up to the Cloud]]
    + org-templates
      + [[file:org-templates/level-0.org][level-0]]
      + [[file:org-templates/level-1.org][level-1]]
