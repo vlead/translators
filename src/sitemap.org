@@ -26,6 +26,8 @@
      + [[file:org-templates/level-1.org][level-1]]
      + [[file:org-templates/level-2.org][level-2]]
      + [[file:org-templates/level-3.org][level-3]]
+     + [[file:org-templates/level-4.org][level-4]]
+     + [[file:org-templates/level-5.org][level-5]]
      + [[file:org-templates/tex-macros.org][tex-macros]]
    + runtime
      + config

@@ -1,8 +1,7 @@
 #+TITLE: Map                                                         
 #+AUTHOR: VLEAD                                                                   
-#+DATE: <2016-12-13 Tue>
-                                            
-#+Setupfile: ./org-templates/level-0.org                                   
+#+DATE: <2016-12-13 Tue>        
+#+Setupfile: ../../../org-templates/level-3.org                                   
 #+TAGS: boilerplate(b)                                                            
 #+EXCLUDE_TAGS: boilerplate                                                       
 #+OPTIONS: ^:nil
