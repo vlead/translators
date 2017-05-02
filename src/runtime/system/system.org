@@ -24,8 +24,13 @@ class System():
 
 #+END_SRC
 
+
 ** Methods
-   The methods are use manipulate the files and directories
+   These methods are used to create the experiments and labs. The versioning of
+   an experiment is done using the Github API and the configuration parameters
+   specified in the [[../config/config.org][=Configuration=]] of the application. The packaged lab
+   structure is generated using the structure generator for open edX module and the
+   corresponding configuration parameters.
 
 #+NAME: methods_system
 #+BEGIN_SRC python

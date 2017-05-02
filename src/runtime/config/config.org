@@ -7,12 +7,21 @@
 
 * Introduction
 
-This holds the application's configuration parameters.
+This holds the application's configuration parameters. It is important to set
+these parameters before running the application. The versioning of an
+experiment requires an admin user key, an org ID and URL under which the experiments
+will be created. The remote author can be granted permissions to the various
+experiments under this org.
+
+The structure generator module for Open edX requires the path to automated
+script, the filename of the JSON format file that is generated each time and
+the relative path in which the packaged lab must be stored.
+
 #+NAME: class_config
 #+BEGIN_SRC python
 class Config:
 
-    # Github user key
+    # Github admin user key
     USER_KEY = "c015c625c82ad0611564e7f4dbf4c3c49c9180b7"
 
     # Github org ID
@@ -38,7 +47,7 @@ class Config:
 #+END_SRC
 
 * Application Configuration
-  Configuration for the application.
+  This contains the Flask configuration parameters for the application.
 #+NAME: app_config
 #+BEGIN_SRC python
 # List of allowed origins for CORS

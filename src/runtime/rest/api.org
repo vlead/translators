@@ -29,6 +29,7 @@ def index(request): # redirect to index.org of documentation
 
 
 ** Create an experiment structure from specified format
+
 *** API design
     
     - URL :: /create_experiment
@@ -55,6 +56,7 @@ def index(request): # redirect to index.org of documentation
          #+END_EXAMPLE
     - SUCCESS Response :: 200 OK
     - ERROR Response :: 400 Invalid Lab Spec
+
 
 *** =create_experiment= API
 #+NAME: create_experiment_route
@@ -83,6 +85,7 @@ def create_experiment():
 
 
 ** Create an OpenedX structure from specified format
+
 *** API design
     
     - URL :: /create_openedx_lab
@@ -111,6 +114,7 @@ def create_experiment():
     - SUCCESS Response :: 200 OK
     - ERROR Response :: 400 Invalid Lab Spec
 
+
 *** =create_openedx_lab= API
 #+NAME: create_experiment_route
 #+BEGIN_SRC python
@@ -132,6 +136,8 @@ def create_openedx_lab():
 
 #+END_SRC
 
+
+
 * Imports
 #+NAME: imports_api
 #+BEGIN_SRC python
@@ -143,6 +149,7 @@ from flask import Blueprint, session, request, make_response, \
 from runtime.system.system_interface import *
 
 #+END_SRC
+
 
 * Tangle
 #+BEGIN_SRC python :tangle api.py :eval no :noweb yes
