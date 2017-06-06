@@ -31,7 +31,7 @@ class SystemInterface():
     def create_experiment(experiment_dict, content_type):
         user = System.get_user()
         org = System.get_org(user)
-        repo_name = experiment_dict['name'] + " - " + experiment_dict['id']
+        repo_name = experiment_dict['name'].replace(" ", "-") + "-" + experiment_dict['id']
         System.create_repo(org, repo_name)
         repo = System.get_repo(org, repo_name)
         # add makefile here

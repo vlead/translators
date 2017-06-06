@@ -29,7 +29,7 @@ def index(request): # redirect to index.org of documentation
 
 
 ** Create an experiment structure from specified format
-
+   
 *** API design
     
     - URL :: /create_experiment
@@ -77,9 +77,9 @@ def create_experiment():
             SystemInterface.create_experiment(experiment_dict, content)
             # Modify this response
             return make_response("success: OK", 200, None)
-        except:
+        except Exception as e:
             # Modify this response
-            return make_response("error: Invalid Lab Spec", 400, None)
+            return make_response(str(e), 400, None)
 
 #+END_SRC
 
@@ -124,15 +124,15 @@ def create_openedx_lab():
         data_json = request.get_json()
         lab_dict = yaml.safe_load(json.dumps(data_json))
         lab_id = lab_dict['course']['id']
-        dname = lab_dict['course']['display_name'] # Assumming '-' separated name
+        dname = lab_dict['course']['display_name'].replace(" ", "-")
         labname = dname + "-" + lab_id
         try:
             SystemInterface.create_openedx_lab(labname, data_json)
             # Modify this response
             return make_response("success: OK", 200, None)
-        except:
+        except Exception as e:
             # Modify this response
-            return make_response("error: Invalid Lab Spec", 400, None)
+            return make_response(str(e), 400, None)
 
 #+END_SRC
 
@@ -149,7 +149,6 @@ from flask import Blueprint, session, request, make_response, \
 from runtime.system.system_interface import *
 
 #+END_SRC
-
 
 * Tangle
 #+BEGIN_SRC python :tangle api.py :eval no :noweb yes
