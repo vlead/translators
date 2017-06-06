@@ -1,0 +1,49 @@
+#+TITLE: The Translator Module
+#+AUTHOR: VLEAD
+#+SETUPFILE: ./org-templates/level-0.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* How to run the app
++ Clone the repo and cd into the directory
+#+BEGIN_SRC bash
+git clone https://github.com/vlead/translators
+cd translators
+#+END_SRC
+
++ Change the branch
+#+BEGIN_SRC bash
+git checkout 2017-summer-interns
+#+END_SRC
+
++ Create a virtual environment and source it. (virtualenv must be installed in
+  your system)
+#+BEGIN_SRC bash
+mkdir ~/.virtualenvs
+virtualenv ~/.virtualenvs/translators-venv
+source ~/.virtalenvs/translators-venv/test/bin/activate
+#+END_SRC
+
++ Install Python dependencies for the app
+#+BEGIN_SRC bash
+python build/code/runtime/setup.py install
+#+END_SRC
+
++ Build from src
+#+BEGIN_SRC bash
+make
+#+END_SRC
+
++ Set the =PYTHONPATH=
+#+BEGIN_SRC bas
+cd build/code
+export PYTHONPATH=$(pwd)
+#+END_SRC
+
++ Run the app
+#+BEGIN_SRC bash
+cd runtime/rest
+python app.py
+#+END_SRC
+
