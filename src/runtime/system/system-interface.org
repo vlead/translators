@@ -1,3 +1,4 @@
+
 #+TITLE: System Interface implementation for translators
 #+AUTHOR: VLEAD
 #+SETUPFILE: ../../org-templates/level-2.org
@@ -39,7 +40,7 @@ class SystemInterface():
         System.create_file(repo, "README." + content_type, "")
         # add the specification file
         for section in experiment_dict['sections']:
-            System.create_file(repo, section.lower() + "." + content_type, "/src")
+            System.create_file(repo, section.lower() + "-" + experiment_dict['id']  +  "." + content_type, "/src")
 
     @staticmethod
     def create_openedx_lab(labname, data_json):
