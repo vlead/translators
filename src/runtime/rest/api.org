@@ -57,7 +57,7 @@ def index(request): # redirect to index.org of documentation
     - SUCCESS Response :: 200 OK
     - ERROR Response :: 400 Invalid Lab Spec
 
-
+                        
 *** =create_experiment= API
 #+NAME: create_experiment_route
 #+BEGIN_SRC python
@@ -75,6 +75,63 @@ def create_experiment():
         content = data_dict['content-type']
         try:
             SystemInterface.create_experiment(experiment_dict, content)
+            # Modify this response
+            return make_response("success: OK", 200, None)
+        except Exception as e:
+            # Modify this response
+            return make_response(str(e), 400, None)
+
+#+END_SRC
+
+
+
+** Update an experiment
+   
+*** API design
+    
+    - URL :: /update_experiment
+    - METHOD :: POST
+    - PAYLOAD ::
+         #+BEGIN_EXAMPLE
+{
+        "experiment" : {
+                     "id": "e99847",
+                     "name": "Parallel and distributed processing",
+                     "overview": "This deals with eiciting how parallel and distributed processing is done",
+                     "sections" : [
+                                "Introduction",
+                                "Objective",
+                                "Tutorial",
+                                "Illustration",
+                                "Procedure",
+                                "Experiment",
+                                "Observations",
+                                "Assignment",
+                                "References"]},
+        "content-type": "org"
+}
+         #+END_EXAMPLE
+    - SUCCESS Response :: 200 OK
+    - ERROR Response :: 400 Invalid Lab Spec
+
+
+*** =update_experiment= API
+#+NAME: create_experiment_route
+#+BEGIN_SRC python
+@api.route("/update_experiment", methods=['POST'])
+def update_experiment():
+    if request.method == 'POST':
+        data_json = json.dumps(request.get_json())
+        data_dict = yaml.safe_load(data_json)
+        experiment_dict = {
+            'id': data_dict['experiment']['id'],
+            'name': data_dict['experiment']['name'],
+            'sections': data_dict['experiment']['sections'],
+            'overview': data_dict['experiment']['overview']
+        }
+        content = data_dict['content-type']
+        try:
+            SystemInterface.update_experiment(experiment_dict, content)
             # Modify this response
             return make_response("success: OK", 200, None)
         except Exception as e:
