@@ -39,7 +39,7 @@ class SystemInterface():
         System.create_file(repo, "README." + content_type, "")
         # add the specification file
         for section in experiment_dict['sections']:
-            System.create_file(repo, section.lower() + "." + content_type, "/src")
+            System.create_file(repo, section.lower().replace(" ", "-") + "." + content_type, "/src")
 
     @staticmethod
     def create_openedx_lab(labname, data_json):
