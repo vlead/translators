@@ -55,10 +55,11 @@ class System():
                 return repo
 
     @staticmethod
-    def create_file(repo, new_file, path):
+    def create_file(repo, new_file, path, content = None):
         file_path = path + "/" + new_file
-        file_content = "This is the " + new_file + " file"
-        repo.create_file(file_path, new_file + " file", file_content)
+        if content is None:
+            content = "This is the " + new_file + " file"
+        repo.create_file(file_path, new_file + " file", content)
 
     @staticmethod
     def gen_json_file(json_dump, filename):

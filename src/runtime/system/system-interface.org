@@ -37,7 +37,7 @@ class SystemInterface():
         repo = System.get_repo(org, repo_name)
         # add makefile here
         # check makefile contents
-        System.create_file(repo, "README." + content_type, "")
+        System.create_file(repo, "README." + content_type, "", "* Overview\n" + experiment_dict['overview'] + "* Warning\n")
         # add the specification file
         for section in experiment_dict['sections']:
             System.create_file(repo, section.lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type, "/src")
