@@ -42,15 +42,15 @@ class SystemInterface():
             System.create_file(repo, section.lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type, "/src")
     
     @staticmethod
-    def update_experiment(experiment_dict, content):
+    def update_experiment(experiment_dict, content_type):
         user = System.get_user()
         org = System.get_org(user)
         repo_name = experiment_dict['name'].replace(" ", "-") + "-" + experiment_dict['id']
         repo = System.get_repo(org, repo_name)
         filenames_spec = experiment_dict['sections']
         for i in range(len(filenames_spec)):
-            filenames_spec[i] = filenames_spec[i].lower().replace(" ", "-") + '-' + experiment_dict['id] + "." + content_type
-        files = System.get_files(repo, '/src')
+            filenames_spec[i] = filenames_spec[i].lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type 
+        files = System.get_file(repo, '/src')
         filenames_repo = []
         for file in files:
             filenames_repo.append(file.name)
@@ -61,11 +61,11 @@ class SystemInterface():
         delete = []
         for filename_repo in filenames_repo:
             if filename_repo not in filenames_spec:
-                remove.append(filename_repo)
+                delete.append(filename_repo)
         for section in add:
             System.create_file(repo, section, "/src")
         for section in delete:
-            sha = repo.get_content("/src/"+section).sha
+            sha = repo.get_contents("/src/"+section).sha
             System.delete_file(repo, section, "/src", sha)
 
     @staticmethod
