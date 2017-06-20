@@ -32,21 +32,21 @@ class SystemInterface():
         user = System.get_user()
         org = System.get_org(user)
         repo_name = experiment_dict['name'].replace(" ", "-") + "-" + experiment_dict['id']
-        System.create_repo(org, repo_name)
         repo = System.get_repo(org, repo_name)
-        # add makefile here
-        # check makefile contents
-        System.create_file(repo, "README.org", "", "* Overview\n" + experiment_dict['overview'] + "\n* Warning\nDo not create resource on the content server for a new file. Use the API =/update_experiment=.")
-        # add the specification file
-        for section in experiment_dict['sections']:
-            System.create_file(repo, section.lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type, "/src")
-    
+        if repo is not None:
+            SystemInterface.update_experiment(experiment_dict, content_type, repo)
+        else:
+            System.create_repo(org, repo_name)
+            repo = System.get_repo(org, repo_name)
+            # add makefile here
+            # check makefile contents
+            System.create_file(repo, "README.org", "", "* Overview\n" + experiment_dict['overview'] + "\n* Warning\nDo not create resource on the content server for a new file. Use the API =/update_experiment=.")
+            # add the specification file
+            for section in experiment_dict['sections']:
+                System.create_file(repo, section.lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type, "/src")
+
     @staticmethod
-    def update_experiment(experiment_dict, content_type):
-        user = System.get_user()
-        org = System.get_org(user)
-        repo_name = experiment_dict['name'].replace(" ", "-") + "-" + experiment_dict['id']
-        repo = System.get_repo(org, repo_name)
+    def update_experiment(experiment_dict, content_type, repo):
         filenames_spec = experiment_dict['sections']
         for i in range(len(filenames_spec)):
             filenames_spec[i] = filenames_spec[i].lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type 
