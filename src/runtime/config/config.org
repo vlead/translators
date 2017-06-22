@@ -22,7 +22,7 @@ the relative path in which the packaged lab must be stored.
 class Config:
 
     # Github admin user key
-    USER_KEY = "c015c625c82ad0611564e7f4dbf4c3c49c9180b7"
+    USER_KEY = "6c70ada5000150db9bcc72f39bea7a99aa6977dc"
 
     # Github org ID
     ORG_ID = 26247085
