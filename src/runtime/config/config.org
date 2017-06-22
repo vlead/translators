@@ -22,7 +22,7 @@ the relative path in which the packaged lab must be stored.
 class Config:
 
     # Github admin user key
-    USER_KEY = "6c70ada5000150db9bcc72f39bea7a99aa6977dc"
+    USER_KEY = "ed40cebc776d2b00834d7fba60ccbd13beaae2b6"
 
     # Github org ID
     ORG_ID = 26247085
@@ -39,6 +39,62 @@ class Config:
     # Openedx lab path
     LABPATH = "."
 
+    # Makefile
+    MAKEFILE = """#SHELL := /bin/bash
+CODE_DIR=build/code
+DOCS_DIR=build/docs
+PWD=$(shell pwd)
+STATUS=0
+
+all:  post-build
+
+init:
+    ./init.sh
+
+build: init
+    make -f tangle-make -k all
+
+post-build: build
+    if [ ! -d "${DOCS_DIR}/simulation/static/img" ]; then mkdir -p ${DOCS_DIR}/simulation/static/img; fi
+    if [ ! -d "${DOCS_DIR}/simulation/static/js" ]; then mkdir -p ${DOCS_DIR}/simulation/static/js; fi
+    if [ ! -d "${DOCS_DIR}/simulation/static/css" ]; then mkdir -p ${DOCS_DIR}/simulation/static/css; fi
+    if [ ! -d "${CODE_DIR}/simulation/static/img" ]; then mkdir -p ${CODE_DIR}/simulation/static/img; fi
+    if [ ! -d "${CODE_DIR}/simulation/static/js" ]; then mkdir -p ${CODE_DIR}/simulation/static/js; fi
+    if [ ! -d "${CODE_DIR}/simulation/static/css" ]; then mkdir -p ${CODE_DIR}/simulation/static/css; fi
+    rsync -a ${DOCS_DIR}/simulation/static/img/ ${CODE_DIR}/simulation/static/img/
+    rsync -a ${DOCS_DIR}/simulation/static/js/ ${CODE_DIR}/simulation/static/js/
+    rsync -a ${DOCS_DIR}/simulation/static/css/ ${CODE_DIR}/simulation/static/css/
+
+clean:
+    make -f tangle-make clean"""
+
+    # init.sh
+    INIT = """#!/bin/bash
+
+if [ -d literate-tools ]; then
+    echo "literate-tools already present"
+    (cd literate-tools; git checkout readtheorg; git pull)
+else
+    (git clone https://github.com/vlead/literate-tools.git; cd literate-tools; git checkout readtheorg)
+fi
+
+if [ -L tangle-make ]; then
+    echo "symlinked makefile already present"
+else
+    ln -sf literate-tools/makefile tangle-make
+fi"""
+
+    # README.org
+    README = """
+* Simulation
++ Use the directory =src/simulation= for the simulation files.
++ Add a directory =static= in =src/simulation= for all the static files.
++ The =static= directory must have three directories =img=, =js=, =css= for the respective files.
+
+* NOTE
++ Please stick to the naming conventions, to build the resources without any error.
+    """
+    
     # use Exceptions module here to show
     # "Cannot initialize error"
     def __init__(self):
