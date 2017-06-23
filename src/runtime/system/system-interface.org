@@ -22,10 +22,18 @@ class SystemInterface():
         pass
 
 #+END_SRC
-
+   
 ** Methods
-
-#+NAME: methods_system_interface
+*** create_experiment
++ There are three =staticmethods= in SytemInterface class. First one is =create_experiment=. 
++ The method interacts with =System= package and get =user= and =organisation= by the details provided in =Config=. 
++ After that, it checks for the existence of the repository given as input to the API.
++ If repo already exists, that repo is updated using =update_experiment= method, described in the second part.
++ Else, it will create a git version controlled repository in =github= and will create files with the directory structure as specified in sections of the experiment.
++ =makefile= and =init.sh= files are shell scripts which are suppose to build the experiment.
++ =README.org= contains steps to develop the experiment.
++ =/src= directory is created which contains org files for each section(specification) and inside that it has =simulation= directory which is supposed to contain files for simulation in experiment.
+#+NAME: create_experiment
 #+BEGIN_SRC python
     @staticmethod
     def create_experiment(experiment_dict, content_type):
@@ -49,6 +57,15 @@ class SystemInterface():
                 if section.lower() is not "simulation" and section.lower() is not "experiment":
                     System.create_file(repo, section.lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type, "/src")
 
+#+END_SRC
+*** update_experiment
++ Second one is =update_experiment=. 
++ It is called by =create_experiment= when the repo already exists.
++ The method extracts sections(specifications) and compare it with the existing sections(specifications).
++ Those who are new gets added, existing which are present in new specification remains intact and rest are deleted.
+
+#+NAME: update_experiment
+#+BEGIN_SRC python
     @staticmethod
     def update_experiment(experiment_dict, content_type, repo):
         filenames_spec = experiment_dict['sections']
@@ -71,7 +88,13 @@ class SystemInterface():
         for section in delete:
             sha = repo.get_contents("/src/"+section).sha
             System.delete_file(repo, section, "/src", sha)
+#+END_SRC
 
+*** create_openedx_lab
++ Third one is =create_openedx_lab=. 
++ It creates a gzip file which can be directly imported in openedx.
+#+NAME: create_openedx_lab
+#+BEGIN_SRC python
     @staticmethod
     def create_openedx_lab(labname, data_json):
         # Should be modified if the name can't be unique
