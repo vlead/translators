@@ -122,5 +122,7 @@ import os
 #+BEGIN_SRC python :tangle system_interface.py :eval no :noweb yes
 <<imports_system_interface>>
 <<class_system_interface>>
-<<methods_system_interface>>
+<<create_experiment>>
+<<update_experiment>>
+<<create_openedx_lab>>
 #+END_SRC

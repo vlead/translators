@@ -33,6 +33,7 @@ class System():
 
 *** get_user
 + Returns the user based on the personal access token from Config.
+#+NAME: get_user
 #+BEGIN_SRC python
     @staticmethod
     def get_user():
@@ -42,6 +43,7 @@ class System():
 
 *** get_org
 + Returns the org based on the ORG-ID from Config.
+#+NAME: get_org
 #+BEGIN_SRC python
     @staticmethod
     def get_org(user):
@@ -53,6 +55,7 @@ class System():
 
 *** create_repo
 + Creates repo in the org.
+#+NAME: create_repo
 #+BEGIN_SRC python
     @staticmethod
     def create_repo(org, name):
@@ -60,8 +63,21 @@ class System():
 
 #+END_SRC
 
+*** delete_repo
++ Deletes repo in the org.
+#+NAME: delete_repo
+#+BEGIN_SRC python
+    @staticmethod
+    def delete_repo(org, name):
+        for repo in org.get_repos():
+            if repo.name == name:
+                repo.delete()
+
+#+END_SRC
+
 *** get_repo
 + Returns the repo with specified name in the org.
+#+NAME: get_repo
 #+BEGIN_SRC python
     @staticmethod
     def get_repo(org, name):
@@ -73,6 +89,7 @@ class System():
 
 *** get_file
 + Returns the files in the given path.
+#+NAME: get_file
 #+BEGIN_SRC python
     @staticmethod
     def get_file(repo, path):
@@ -82,6 +99,7 @@ class System():
 
 *** create_file
 + Creates file in the repo with specified name and the path.
+#+NAME: create_file
 #+BEGIN_SRC python
     @staticmethod
     def create_file(repo, new_file, path, content = None):
@@ -94,6 +112,7 @@ class System():
 
 *** delete_file
 + Deletes the file with specified path.
+#+NAME: delete_file
 #+BEGIN_SRC python
     @staticmethod
     def delete_file(repo, file, path, sha):
@@ -103,6 +122,7 @@ class System():
 #+END_SRC
 
 *** gen_json_file
+#+NAME: gen_json_file
 #+BEGIN_SRC python
     @staticmethod
     def gen_json_file(json_dump, filename):
@@ -113,22 +133,25 @@ class System():
 #+END_SRC
 
 *** gen_lab_dir
+#+NAME: gen_lab_dir
 #+BEGIN_SRC python
     @staticmethod
     def gen_lab_dir(labname):
         os.mkdir(Config.LABPATH+"/"+labname)
 
 #+END_SRC
-
+    
 *** del_lab_dir
+#+NAME: del_lab_dir
 #+BEGIN_SRC python
     @staticmethod
     def del_lab_dir(labname):
         rmtree(Config.LABPATH+"/"+labname)
 
 #+END_SRC
-
+    
 *** pack_lab
+#+NAME: pack_lab
 #+BEGIN_SRC python
     @staticmethod
     def pack_lab(labname):
@@ -140,6 +163,7 @@ class System():
 #+END_SRC
 
 *** execute_python
+#+NAME: execute_python
 #+BEGIN_SRC python
     @staticmethod
     def execute_python(script, args):
@@ -160,10 +184,22 @@ import os, json
 from shutil import rmtree
 
 #+END_SRC
-
+   
 * Tangle                                                        :boilerplate:
 #+BEGIN_SRC python :tangle system.py :eval no :noweb yes
 <<imports_system>>
 <<class_system>>
-<<methods_system>>
+<<get_user>>
+<<get_org>>
+<<create_repo>>
+<<delete_repo>>
+<<get_repo>>
+<<get_file>>
+<<create_file>>
+<<delete_file>>
+<<gen_json_file>>
+<<gen_lab_dir>>
+<<del_lab_dir>>
+<<pack_lab>>
+<<execute_python>>
 #+END_SRC
