@@ -73,8 +73,9 @@ class SystemInterface():
             filenames_spec[i] = filenames_spec[i].lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type 
         files = System.get_file(repo, '/src')
         filenames_repo = []
-        for file in files:
-            filenames_repo.append(file.name)
+        for f in files:
+            if f.name != "simulation":
+                filenames_repo.append(f.name)
         add = []
         for filename_spec in filenames_spec:
             if filename_spec not in filenames_repo:
