@@ -20,6 +20,8 @@ api = Blueprint('APIs', __name__)
 
 
 ** index
+This route is the index route which takes the user to thr index.org of the documentation.
+
 #+NAME: index_route
 #+BEGIN_SRC python
 @api.route("/", methods=['GET'])
@@ -60,11 +62,19 @@ def index(request): # redirect to index.org of documentation
 
                         
 *** =create_experiment= API
+The route =/create_experiment= is a route of method =POST= which will build a
+GitHub repository in a particular organisation to author the content of the resources.
 #+NAME: create_experiment_route
 #+BEGIN_SRC python
 @api.route("/create_experiment", methods=['POST'])
 def create_experiment():
     if request.method == 'POST':
+#+END_SRC
+
+Then it needs to covert the data recieved from the user as =JSON= to Python =dict=
+for passing it to =System Interface=.
+#+NAME: json_to_dict
+#+BEGIN_SRC python
         data_json = json.dumps(request.get_json())
         data_dict = yaml.safe_load(data_json)
         experiment_dict = {
@@ -74,6 +84,11 @@ def create_experiment():
             'sections': data_dict['experiment']['sections']
         }
         content = data_dict['content-type']
+#+END_SRC
+
+And finally pass the converted data to the =System Interface= for working on the data.
+#+NAME: pass_to_SI
+#+BEGIN_SRC python
         try:
             SystemInterface.create_experiment(experiment_dict, content)
             # Modify this response
@@ -158,4 +173,6 @@ from runtime.system.system_interface import *
 <<blueprint>>
 <<index_route>>
 <<create_experiment_route>>
+<<json_to_dict>>
+<<pass_to_SI>>
 #+END_SRC

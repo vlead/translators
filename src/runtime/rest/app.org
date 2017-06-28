@@ -9,6 +9,7 @@
   The web server for the translators application
 
 * Flask server
+  We will need to initialize the app in =Flask=.
 #+NAME: server
 #+BEGIN_SRC python
 def create_app(config):
@@ -28,6 +29,8 @@ def create_app(config):
 #+END_SRC
 
 * Logging
+  And also take care of the logs for everything that happens so that we can
+  debug later.
 #+NAME: configure_logging
 #+BEGIN_SRC python
 def configure_logging(app):
