@@ -61,6 +61,7 @@ def configure_logging(app):
 #+END_SRC
 
 * imports
+These are the Python modules that needs to be imported for the app to run.
 #+NAME: imports_server
 #+BEGIN_SRC python
 import os
@@ -80,6 +81,7 @@ from runtime.config.app_config import LOG_LEVEL
 
 * Run server
 #+NAME: run_server
+Finally, the server is run hosting this app on =localhost=.
 #+BEGIN_SRC python
 if __name__ == "__main__":
     app = create_app(config)
