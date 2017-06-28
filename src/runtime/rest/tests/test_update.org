@@ -21,8 +21,9 @@ class TestCheckUpdate(TestHarness):
         print "test_check_update"
 
         self.client.post("/create_experiment", data=self.payload, content_type='application/json')
-        self.payload.replace("Objective", "experiment")
-        response = self.client.post("/create_experiment", data=self.payload, content_type='application/json')
+        
+        response = self.client.post("/create_experiment", data=self.payload.replace("Objective", "experiment"), content_type='application/json')
+
         self.assertEqual(response.status_code, 200)
 
 #+END_SRC

@@ -20,8 +20,6 @@ class TestCheckCreate(TestHarness):
     def test_check_create(self):
         print "test_check_create"
 
-        self.payload.replace("Objective", "experiment")
-        print self.payload
         response = self.client.post("/create_experiment", data=self.payload, content_type='application/json')
 
         self.assertEqual(response.status_code, 200)
