@@ -52,10 +52,9 @@ class SystemInterface():
             System.create_file(repo, "init.sh", "", Config.INIT)
             System.create_file(repo, "README.org", "", "* Overview\n+ " + experiment_dict['overview'] + Config.README)
             # add the specification file
-            System.create_file(repo, "simulation-" + experiment_dict['id'] + "." + content_type, "/src/simulation")
+            # System.create_file(repo, "simulation-" + experiment_dict['id'] + "." + content_type, "/src/simulation")
             for section in experiment_dict['sections']:
-                if section.lower() is not "simulation" and section.lower() is not "experiment":
-                    System.create_file(repo, section.lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type, "/src")
+                System.create_file(repo, section.lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type, "/src/"+section.lower().replace(" ", "-") + "-" + experiment_dict['id'])
 
 #+END_SRC
 *** update_experiment
