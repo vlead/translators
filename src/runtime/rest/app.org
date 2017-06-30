@@ -80,8 +80,8 @@ from runtime.config.app_config import LOG_LEVEL
 #+END_SRC
 
 * Run server
-#+NAME: run_server
 Finally, the server is run hosting this app on =localhost=.
+#+NAME: run_server
 #+BEGIN_SRC python
 if __name__ == "__main__":
     app = create_app(config)
