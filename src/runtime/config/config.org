@@ -41,14 +41,16 @@ class Config:
 
     # Makefile
     MAKEFILE = """#SHELL := /bin/bash
+
 CODE_DIR=build/code
 DOCS_DIR=build/docs
 PWD=$(shell pwd)
 STATUS=0
+PUSH_DIR=$(shell basename `pwd`)
 
 all:  post-build
 
-init:
+init: 
     ./init.sh
 
 build: init
@@ -64,25 +66,14 @@ post-build: build
     rsync -a ${DOCS_DIR}/simulation/static/img/ ${CODE_DIR}/simulation/static/img/
     rsync -a ${DOCS_DIR}/simulation/static/js/ ${CODE_DIR}/simulation/static/js/
     rsync -a ${DOCS_DIR}/simulation/static/css/ ${CODE_DIR}/simulation/static/css/
+    rm -rf ${PUSH_DIR}
+    mkdir ${PUSH_DIR}
+    rsync -a ${DOCS_DIR}/ ${PUSH_DIR}
+    rsync -a ${CODE_DIR}/simulation ${PUSH_DIR}
 
-clean:
+clean:    
+    rm -rf ${PUSH_DIR}
     make -f tangle-make clean"""
-
-    # init.sh
-    INIT = """#!/bin/bash
-
-if [ -d literate-tools ]; then
-    echo "literate-tools already present"
-    (cd literate-tools; git checkout readtheorg; git pull)
-else
-    (git clone https://github.com/vlead/literate-tools.git; cd literate-tools; git checkout readtheorg)
-fi
-
-if [ -L tangle-make ]; then
-    echo "symlinked makefile already present"
-else
-    ln -sf literate-tools/makefile tangle-make
-fi"""
 
     # README.org
     README = """* Simulation
