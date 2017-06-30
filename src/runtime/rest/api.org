@@ -75,31 +75,29 @@ Then it needs to covert the data recieved from the user as =JSON= to Python =dic
 for passing it to =System Interface=.
 #+NAME: json_to_dict
 #+BEGIN_SRC python
-        data_json = json.dumps(request.get_json())
-        data_dict = yaml.safe_load(data_json)
-        experiment_dict = {
-            'id': data_dict['experiment']['id'],
-            'name': data_dict['experiment']['name'],
-            'overview': data_dict['experiment']['overview'],
-            'sections': data_dict['experiment']['sections']
-        }
-        content = data_dict['content-type']
+    data_json = json.dumps(request.get_json())
+    data_dict = yaml.safe_load(data_json)
+    experiment_dict = {
+        'id': data_dict['experiment']['id'],
+        'name': data_dict['experiment']['name'],
+        'overview': data_dict['experiment']['overview'],
+        'sections': data_dict['experiment']['sections']
+    }
+    content = data_dict['content-type']
 #+END_SRC
 
 And finally pass the converted data to the =System Interface= for working on the data.
 #+NAME: pass_to_SI
 #+BEGIN_SRC python
-        try:
-            SystemInterface.create_experiment(experiment_dict, content)
-            # Modify this response
-            return make_response("success: OK", 200, None)
-        except Exception as e:
-            # Modify this response
-            return make_response(str(e), 400, None)
+    try:
+        SystemInterface.create_experiment(experiment_dict, content)
+        # Modify this response
+        return make_response("success: OK", 200, None)
+    except Exception as e:
+        # Modify this response
+        return make_response(str(e), 400, None)
 
 #+END_SRC
-
-
 
 ** Create an OpenedX structure from specified format
 
@@ -133,7 +131,7 @@ And finally pass the converted data to the =System Interface= for working on the
 
 
 *** =create_openedx_lab= API
-#+NAME: create_experiment_route
+#+NAME: create_openedx_lab_route
 #+BEGIN_SRC python
 @api.route("/create_openedx_lab", methods=['POST'])
 def create_openedx_lab():
@@ -175,4 +173,5 @@ from runtime.system.system_interface import *
 <<create_experiment_route>>
 <<json_to_dict>>
 <<pass_to_SI>>
+<<create_openedx_lab_route>>
 #+END_SRC
