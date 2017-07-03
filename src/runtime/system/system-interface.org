@@ -68,26 +68,47 @@ class SystemInterface():
     @staticmethod
     def update_experiment(experiment_dict, content_type, repo):
         filenames_spec = experiment_dict['sections']
+
         for i in range(len(filenames_spec)):
-            filenames_spec[i] = filenames_spec[i].lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type 
-        files = System.get_file(repo, '/src')
-        filenames_repo = []
-        for f in files:
-            if f.name != "simulation":
-                filenames_repo.append(f.name)
+            filenames_spec[i] = filenames_spec[i].lower().replace(" ", "-") + "-" + experiment_dict['id']
+            print filenames_spec[i]
+
+        filenames_repo = System.get_file(repo, '/src')
+
+        only_content_name = []
+        for i in filenames_repo:
+            only_content_name.append(i.name)
+        
         add = []
         for filename_spec in filenames_spec:
-            if filename_spec not in filenames_repo:
+            if filename_spec not in only_content_name:
                 add.append(filename_spec)
+
+        for section in add:
+            print section
+            print "form add"
+        
         delete = []
         for filename_repo in filenames_repo:
-            if filename_repo not in filenames_spec:
+            if filename_repo.name not in filenames_spec:
                 delete.append(filename_repo)
-        for section in add:
-            System.create_file(repo, section, "/src")
+        
         for section in delete:
-            sha = repo.get_contents("/src/"+section).sha
-            System.delete_file(repo, section, "/src", sha)
+            print section
+            print "from delete"
+
+        print "INITIATED ADD PROCESS"
+
+        for section in add:
+            System.create_file(repo, section + "." + content_type, "/src/" + section)
+            print section + " added to repository"
+
+        print "INITIATED DELETE PROCESS"
+        
+        for section in delete:
+	    for content in System.get_file(repo, "/src/" + section.name):
+	        System.delete_file(repo, content.name , "/src/" + section.name, content.sha)
+
 #+END_SRC
 
 *** create_openedx_lab
