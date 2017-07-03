@@ -39,6 +39,22 @@ class Config:
     # Openedx lab path
     LABPATH = "."
 
+    # INIT
+    INIT = """#!/bin/bash
+
+if [ -d literate-tools ]; then
+    echo "literate-tools already present"
+    (cd literate-tools; git checkout readtheorg; git pull)
+else
+    (git clone https://github.com/vlead/literate-tools.git; cd literate-tools; git checkout readtheorg)
+fi
+
+if [ -L tangle-make ]; then
+    echo "symlinked makefile already present"
+else
+    ln -sf literate-tools/makefile tangle-make
+fi"""
+
     # Makefile
     MAKEFILE = """#SHELL := /bin/bash
 
@@ -80,8 +96,7 @@ clean:
 + Use the directory =src/simulation= for the simulation files.
 + Add a directory =static= in =src/simulation= for all the static files.
 + The =static= directory must have three directories =img=, =js=, =css= for the respective files.\n* NOTE
-+ Please stick to the naming conventions, to build the resources without any error.
-    """
++ Please stick to the naming conventions, to build the resources without any error."""
     
     # use Exceptions module here to show
     # "Cannot initialize error"
