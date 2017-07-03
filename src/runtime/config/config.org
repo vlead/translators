@@ -107,7 +107,7 @@ clean:
 
 ,* """ + name
         for section in sections:
-            filename = section + "-" + id
+            filename = section.lower() + "-" + id
             content += """
 ,** [[./""" + filename + "/" + filename + ".org][" + section + "]]"
         return content
