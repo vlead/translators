@@ -73,12 +73,12 @@ class SystemInterface():
             filenames_spec[i] = filenames_spec[i].lower().replace(" ", "-") + "-" + experiment_dict['id']
             print filenames_spec[i]
 
+        System.delete_file(repo, "index.org", "/src", System.get_file(repo, "/src/index.org").sha)
+
         filenames_repo = System.get_file(repo, '/src')
 
-        only_content_name = []
-        for i in filenames_repo:
-            only_content_name.append(i.name)
-        
+        only_content_name = list(map(lambda content: content.name, filenames_repo))
+
         add = []
         for filename_spec in filenames_spec:
             if filename_spec not in only_content_name:
@@ -109,6 +109,10 @@ class SystemInterface():
 	    for content in System.get_file(repo, "/src/" + section.name):
 	        System.delete_file(repo, content.name , "/src/" + section.name, content.sha)
 
+        print "CREATING index.org"
+
+        System.create_file(repo, "index.org", "/src", Config.INDEX(experiment_dict['id'], experiment_dict['name'], experiment_dict['sections']))
+        
 #+END_SRC
 
 *** create_openedx_lab
