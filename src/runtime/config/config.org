@@ -109,7 +109,7 @@ clean:
         for section in sections:
             filename = section + "-" + id
             content += """
-,** [[./../""" + filename + "/" + filename + ".org][" + section + "]]"
+,** [[./""" + filename + "/" + filename + ".org][" + section + "]]"
         return content
     
     # use Exceptions module here to show
