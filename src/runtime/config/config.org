@@ -76,7 +76,7 @@ clean:
     make -f tangle-make clean"""
 
     # README.org
-    README = """* Simulation
+    README = """\n* Simulation
 + Use the directory =src/simulation= for the simulation files.
 + Add a directory =static= in =src/simulation= for all the static files.
 + The =static= directory must have three directories =img=, =js=, =css= for the respective files.\n* NOTE
