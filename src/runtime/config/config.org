@@ -98,6 +98,19 @@ clean:
 + Add a directory =static= in =src/simulation= for all the static files.
 + The =static= directory must have three directories =img=, =js=, =css= for the respective files.\n* NOTE
 + Please stick to the naming conventions, to build the resources without any error."""
+
+    # src/index.org
+    @staticmethod
+    def INDEX(id, name, sections):
+        content = """#+TITLE: Index
+,#+AUTHOR: Vlead
+
+,* """ + name
+        for section in sections:
+            filename = section + "-" + id
+            content += """
+,** [[./../""" + filename + "/" + filename + ".org][" + section + "]]"
+        return content
     
     # use Exceptions module here to show
     # "Cannot initialize error"
