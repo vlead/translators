@@ -7,6 +7,7 @@
 #+OPTIONS: ^:nil
 
 * Test Harness
+Starts a testing flask server which will be held after the test.
 ** Imports
 #+BEGIN_SRC python :tangle harness.py
 from random import randint as random_id_generator
@@ -18,6 +19,14 @@ from runtime.system.system import System
 #+END_SRC
    
 ** Class TestHarness
+This class's =setUp= method sets up the context for running
+tests on the =create_experiment= route. 
+
+ - Creates a flask server
+ - Gets the =user= from System
+ - Creates a random test =lab-specification= (payload)
+ - In =tearDown= it deletes the repository from github.
+
 #+BEGIN_SRC python :tangle harness.py
 class TestHarness(TestCase):
     TESTING = True
