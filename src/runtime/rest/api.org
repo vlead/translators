@@ -26,7 +26,7 @@ This route is the index route which takes the user to thr index.org of the docum
 #+BEGIN_SRC python
 @api.route("/", methods=['GET'])
 def index():
-    return """<h1>Translators Running</h>
+    return """<h1>Translators Running</h1>
 <a href="https://github.com/vlead/translators">https://github.com/vlead/translators</a>"""
 
 #+END_SRC
