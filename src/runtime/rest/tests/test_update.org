@@ -1,4 +1,4 @@
-#+title: Test Check Experiment
+#+title: Test Update Experiment
 #+AUTHOR: VLEAD
 #+DATE: [2017-06-27 Tue]
 #+SETUPFILE: ../../../../org-templates/level-4.org
@@ -7,6 +7,7 @@
 #+OPTIONS: ^:nil
 
 * Test
+=TestCheckUpdate= invokes the =update_experiment=.
 ** Imports
 #+BEGIN_SRC python :tangle test_check_update.py
 from runtime.rest.tests.harness import TestHarness
@@ -14,6 +15,10 @@ from runtime.rest.tests.harness import TestHarness
 #+END_SRC
 
 ** Test Case
+
+   Imports the TestHarness which sets up the test-server and lab-specifications.
+   This test makes a post request with a slight update in lab-specification.
+
 #+BEGIN_SRC python :tangle test_check_update.py
 class TestCheckUpdate(TestHarness):
 
