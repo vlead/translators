@@ -25,8 +25,9 @@ This route is the index route which takes the user to thr index.org of the docum
 #+NAME: index_route
 #+BEGIN_SRC python
 @api.route("/", methods=['GET'])
-def index(request): # redirect to index.org of documentation
-    pass
+def index():
+    return """<h1>Translators Running</h>
+<a href="https://github.com/vlead/translators">https://github.com/vlead/translators</a>"""
 
 #+END_SRC
 
@@ -152,7 +153,7 @@ def create_openedx_lab():
 #+END_SRC
 
 
-
+    
 * Imports
 #+NAME: imports_api
 #+BEGIN_SRC python
