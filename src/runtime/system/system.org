@@ -179,7 +179,7 @@ class System():
     @staticmethod
     def create_skeleton(experiment_dict):
         content = Config.CREATE_SKELETON(experiment_dict)
-        f = open(Config.SKELETON_PATH + '/' + experiment_dict['name'] + experiment_dict['id'] + '.html', 'w')
+        f = open(Config.SKELETON_PATH + '/' + experiment_dict['name'] + '-' + experiment_dict['id'] + '.html', 'w')
         f.write(content)
         f.close()
 
