@@ -115,6 +115,7 @@ clean:
 ,** [[./""" + filename + "/" + filename + ".org][" + section + "]]"
         return content
 
+    @staticmethod
     def CREATE_SKELETON(experiment_dict):
         nameid = experiment_dict['name'].lower() + '-' + experiment_dict['id']
         content = """<html>
