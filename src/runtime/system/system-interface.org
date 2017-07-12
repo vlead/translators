@@ -115,6 +115,15 @@ class SystemInterface():
         
 #+END_SRC
 
+*** create_skeleton
+
+#+NAME: create_skeleton
+#+BEGIN_SRC python
+    @staticmethod
+    def create_skeleton(experiment_dict):
+        System.create_skeleton(experiment_dict)
+
+#+END_SRC
 *** create_openedx_lab
 + Third one is =create_openedx_lab=. 
 + It creates a gzip file which can be directly imported in openedx.
@@ -148,6 +157,7 @@ import os
 <<imports_system_interface>>
 <<class_system_interface>>
 <<create_experiment>>
+<<create_skeleton>>
 <<update_experiment>>
 <<create_openedx_lab>>
 #+END_SRC

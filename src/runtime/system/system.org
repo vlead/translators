@@ -173,6 +173,17 @@ class System():
         os.system(command)
 
 #+END_SRC
+*** create_skeleton
+#+NAME create_skeleton
+#+BEGIN_SRC python
+    @staticmethod
+    def create_skeleton(experiment_dict):
+        content = Config.CREATE_SKELETON(experiment_dict)
+        f = open(Config.SKELETON_PATH + '/' + experiment_dict['name'] + experiment_dict['id'] + '.html', 'w')
+        f.write(content)
+        f.close()
+#+END_SRC
+
 ** Imports
    The system requires access to the os library
 #+NAME: imports_system
@@ -200,6 +211,7 @@ from shutil import rmtree
 <<gen_json_file>>
 <<gen_lab_dir>>
 <<del_lab_dir>>
+<<create_skeleton>>
 <<pack_lab>>
 <<execute_python>>
 #+END_SRC

@@ -1,4 +1,3 @@
-
 #+TITLE: The REST API
 #+AUTHOR: VLEAD
 #+SETUPFILE: ../../org-templates/level-2.org
@@ -100,6 +99,74 @@ And finally pass the converted data to the =System Interface= for working on the
 
 #+END_SRC
 
+** Create an experiment structure from specified format
+   
+*** API design
+    
+    - URL :: /create_skeleton
+    - METHOD :: POST
+    - PAYLOAD ::
+         #+BEGIN_EXAMPLE
+{
+        "experiment" : {
+                     "id": "e99847",
+                     "name": "Parallel and distributed processing",
+                     "overview": "This deals with eiciting how parallel and distributed processing is done",
+                     "sections" : [
+                                "Introduction",
+                                "Objective",
+                                "Tutorial",
+                                "Illustration",
+                                "Procedure",
+                                "Experiment",
+                                "Observations",
+                                "Assignment",
+                                "References"]},
+        "content-type": "org"
+}
+         #+END_EXAMPLE
+    - SUCCESS Response :: 200 OK
+    - ERROR Response :: 400 Invalid Lab Spec
+
+                        
+*** =create_skeleton= API
+The route =/create_skeleton= is a route of method =POST= which will
+build a skeleton html with all the appropriate hooks to the resources.
+#+NAME: create_skeleton_route
+#+BEGIN_SRC python
+@api.route("/create_skeleton", methods=['POST'])
+def create_skeleton():
+    if request.method == 'POST':
+#+END_SRC
+
+Then it needs to covert the data recieved from the user as =JSON= to Python =dict=
+for passing it to =System Interface=.
+#+NAME: json_to_dict_1
+#+BEGIN_SRC python
+        data_json = json.dumps(request.get_json())
+        data_dict = yaml.safe_load(data_json)
+        experiment_dict = {
+            'id': data_dict['experiment']['id'],
+            'name': data_dict['experiment']['name'],
+            'overview': data_dict['experiment']['overview'],
+            'sections': data_dict['experiment']['sections']
+        }
+        content = data_dict['content-type']
+#+END_SRC
+
+And finally pass the converted data to the =System Interface= for working on the data.
+#+NAME: pass_to_SI_1
+#+BEGIN_SRC python
+        try:
+            SystemInterface.create_skeleton(experiment_dict)
+            # Modify this response
+            return make_response("success: OK", 200, None)
+        except Exception as e:
+            # Modify this response
+            return make_response(str(e), 400, None)
+
+#+END_SRC
+
 ** Create an OpenedX structure from specified format
 
 *** API design
@@ -174,5 +241,8 @@ from runtime.system.system_interface import *
 <<create_experiment_route>>
 <<json_to_dict>>
 <<pass_to_SI>>
+<<create_skeleton_route>>
+<<json_to_dict_1>>
+<<pass_to_SI_1>>
 <<create_openedx_lab_route>>
 #+END_SRC

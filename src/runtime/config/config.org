@@ -39,6 +39,9 @@ class Config:
     # Openedx lab path
     LABPATH = "."
 
+    # Path for Skeleton
+    SKELETON_PATH = "."
+
     # INIT
     INIT = """#!/bin/bash
 
@@ -46,7 +49,7 @@ if [ -d literate-tools ]; then
     echo "literate-tools already present"
     (cd literate-tools; git checkout readtheorg; git pull)
 else
-    (git clone https://github.com/sounak98/literate-tools.git; cd literate-tools; git checkout readtheorg)
+    (git clone https://github.com/vlead/literate-tools.git; cd literate-tools; git checkout readtheorg)
 fi
 
 if [ -L tangle-make ]; then
@@ -110,6 +113,10 @@ clean:
             filename = section.lower() + "-" + id
             content += """
 ,** [[./""" + filename + "/" + filename + ".org][" + section + "]]"
+        return content
+
+    def CREATE_SKELETON(experiment_dict):
+        content = ""
         return content
     
     # use Exceptions module here to show
