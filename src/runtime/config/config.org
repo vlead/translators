@@ -113,7 +113,7 @@ clean:
 
 ,* """ + name
         for section in sections:
-            filename = section.lower() + "-" + id
+            filename = section.lower().replace(' ','-') + "-" + id
             content += """
 ,** [[./""" + filename + "/" + filename + ".org][" + section + "]]"
         return content
