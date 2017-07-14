@@ -54,7 +54,7 @@ class TestHarness(TestCase):
         })
 
     def tearDown(self):
-        System.delete_repo(self.org, self.repo_name + "-" + self.random_id)
+        System.delete_repo(self.org, self.repo_name)
 
 #+END_SRC
 
