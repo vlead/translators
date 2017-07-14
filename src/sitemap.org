@@ -38,7 +38,7 @@
        + [[file:runtime/exceptions/index.org][The =Exceptions= Package]]
      + rest
        + tests
-         + [[file:runtime/rest/tests/test_update.org][Test Check Experiment]]
+         + [[file:runtime/rest/tests/test_update.org][Test Update Experiment]]
          + [[file:runtime/rest/tests/test_create.org][Test Check Experiment]]
          + [[file:runtime/rest/tests/index.org][Test Setup]]
        + [[file:runtime/rest/index.org][REST Interface for translators]]

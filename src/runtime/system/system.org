@@ -37,7 +37,7 @@ class System():
 #+BEGIN_SRC python
     @staticmethod
     def get_user():
-        return Github(Config.USER_KEY).get_user()
+        return Github(Config.USER_KEY)
 
 #+END_SRC
 
@@ -47,9 +47,7 @@ class System():
 #+BEGIN_SRC python
     @staticmethod
     def get_org(user):
-        for org in user.get_orgs():
-            if org.id == Config.ORG_ID:
-                return org
+        return user.get_org_by_id(Config.ORG_ID)
 
 #+END_SRC
 
@@ -59,7 +57,7 @@ class System():
 #+BEGIN_SRC python
     @staticmethod
     def create_repo(org, name):
-        org.create_repo(name)
+        return org.create_repo(name)
 
 #+END_SRC
 
@@ -81,9 +79,7 @@ class System():
 #+BEGIN_SRC python
     @staticmethod
     def get_repo(org, name):
-        for repo in org.get_repos():
-            if repo.name == name:
-                return repo
+        return org.get_repo(name)
 
 #+END_SRC
 
@@ -102,11 +98,10 @@ class System():
 #+NAME: create_file
 #+BEGIN_SRC python
     @staticmethod
-    def create_file(repo, new_file, path, content = None):
-        file_path = path + "/" + new_file
+    def create_file(repo, path, content = None):
         if content is None:
-            content = "This is the " + new_file + " file"
-        repo.create_file(file_path, new_file + " file", content)
+            content = "This is the file from " + path
+        repo.create_file(path, content, path + " file")
 
 #+END_SRC
 
@@ -115,9 +110,8 @@ class System():
 #+NAME: delete_file
 #+BEGIN_SRC python
     @staticmethod
-    def delete_file(repo, file, path, sha):
-        file_path = path + "/" + file
-        repo.delete_file(file_path, "delete " + file, sha)
+    def delete_file(repo, path):
+        repo.delete_file(path, "delete file from " + path)
 
 #+END_SRC
 
@@ -178,8 +172,7 @@ class System():
 #+NAME: imports_system
 #+BEGIN_SRC python
 from runtime.config.config import Config
-
-from github import Github
+from githubv3.github import Github
 import os, json
 from shutil import rmtree
 
