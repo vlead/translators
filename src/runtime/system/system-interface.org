@@ -47,7 +47,7 @@ class SystemInterface():
             repo = System.create_repo(org, repo_name)
             # add makefile here
             # check makefile contents
-            System.create_file(repo, "makefile", Config.MAKEFILE)
+            System.create_file(repo, "makefile", Config.MAKEFILE(experiment_dict['id']))
             System.create_file(repo, "init.sh", Config.INIT)
             System.create_file(repo, "README.org", "* Overview\n+ " + experiment_dict['overview'] + Config.README)
             System.create_file(repo, "src/index.org", Config.INDEX(experiment_dict['id'], experiment_dict['name'], experiment_dict['sections']))
