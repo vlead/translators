@@ -67,7 +67,7 @@ class System():
 #+BEGIN_SRC python
     @classmethod
     def delete_repo(cls, org, repo_name):
-        repo = cls.get_repo(org, name)
+        repo = cls.get_repo(org, repo_name)
         if repo is not None:
             repo.delete()
 

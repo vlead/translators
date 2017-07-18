@@ -1,0 +1,40 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle iterator.py
+from urlparse import urlparse
+from requester import Requester
+from logger import logger
+
+
+class Iterator(object):
+    def __init__(self):
+        pass
+
+    @classmethod
+    def iterate_type_one(cls, response, field_to_compare, value, user):
+        result = cls.iterate(response, field_to_compare, value)
+        while result is None and 'next' in response.links:
+            url = urlparse(response.links['next']['url'])
+            try:
+                response = Requester.get_request(
+                    url.path + '?' + url.query, user.get_value('token'))
+                result = cls.iterate(response, field_to_compare, value)
+            except Exception as identifier:
+                logger.debug(identifier.message)
+
+        return result
+
+    @staticmethod
+    def iterate(response, field_to_compare, value):
+        for iterate in response.json():
+            if iterate[str(field_to_compare)] == value:
+                return iterate
+
+#+END_SRC

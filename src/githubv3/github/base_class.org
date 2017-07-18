@@ -1,0 +1,45 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle base_class.py
+from requester import Requester
+from logger import logger
+
+
+class BaseClass(object):
+    def __init__(self):
+        self.details = {}
+
+    def __repr__(self):
+        return "NAME : {}".format(self.get_value('name'))
+
+    def update_details(self, new_details):
+        for detail in new_details:
+            self.set_value(detail, new_details[str(detail)])
+
+    def update_details_by_request(self, url, token):
+        try:
+            response = Requester.get_request(
+                url, token)
+            self.update_details(response.json())
+            logger.debug('details updated successfully')
+        except Exception as identifier:
+            self.set_value('update_status', False)
+            logger.debug(str(identifier.message))
+
+    def get_value(self, value_of):
+        try:
+            return self.details[str(value_of)]
+        except KeyError:
+            return None
+
+    def set_value(self, set_value_of, value):
+        self.details[str(set_value_of)] = value
+
+#+END_SRC

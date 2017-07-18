@@ -1,0 +1,40 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle github_urls.py
+class GithubURLs(object):
+    def __init__(self):
+        pass
+
+    BASE_URL = 'https://api.github.com'
+    USER = '/user'
+    USER_REPOS = '/user/repos'
+    USER_ORGS = '/user/orgs'
+
+    @staticmethod
+    def org(login):
+        return '/orgs' + '/' + str(login)
+
+    @staticmethod
+    def get_repo(owner, repo):
+        return '/repos' + '/' + str(owner) + '/' + str(repo)
+
+    @staticmethod
+    def delete_repo(owner, repo):
+        return '/repos' + '/' + str(owner) + '/' + str(repo)
+
+    @staticmethod
+    def create_repo_in_org(org):
+        return '/orgs' + '/' + str(org) + '/repos'
+
+    @staticmethod
+    def get_contents(owner, repo, path):
+        return '/repos' + '/' + str(owner) + '/' + str(repo) + '/contents' + '/' + str(path)
+
+#+END_SRC

@@ -1,0 +1,23 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle directory.py
+from base_class import BaseClass
+
+
+class Directory(BaseClass):
+    def __init__(self, details, repo):
+        BaseClass.__init__(self)
+        self.set_value('repository', repo)
+        self.update_details(details)
+
+    def delete(self):
+        self.get_value('repository').delete_file(self.get_value('path'))
+
+#+END_SRC

@@ -1,0 +1,79 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle repository.py
+from base64 import b64encode
+from requester import Requester
+from github_urls import GithubURLs
+from base_class import BaseClass
+from files import File
+from directory import Directory
+from logger import logger
+
+
+class Repository(BaseClass):
+    def __init__(self, details, user):
+        BaseClass.__init__(self)
+        self.update_details(details)
+        self.set_value('user', user)
+
+    def delete(self):
+        url = GithubURLs.get_repo(self.get_value(
+            'owner')['login'], self.get_value('name'))
+
+        token = self.get_value('user').get_value('token')
+
+        Requester.delete_request(url, token)
+
+    def get_contents(self, path):
+        try:
+            url = GithubURLs.get_contents(self.get_value('owner')['login'],
+                                          self.get_value('name'), path)
+
+            token = self.get_value('user').get_value('token')
+
+            file_content = Requester.get_request(url, token).json()
+
+            if isinstance(file_content, list):
+                return list(map(lambda content: File(
+                    content, self) if content['type'] == 'file' else Directory(content, self), file_content))
+            else:
+                return File(file_content, self) if file_content['type'] == 'file' else Directory(file_content, self)
+
+        except Exception as identifier:
+            logger.debug('error getting files at given path')
+            logger.debug(identifier.message)
+
+    def delete_file(self, path, message='commit message'):
+        try:
+            file_content = self.get_contents(path)
+
+            if isinstance(file_content, list):
+                for content in file_content:
+                    content.delete(message)
+            else:
+                file_content.delete(message)
+        except Exception as identifier:
+            logger.debug('error getting files at given path')
+            logger.debug(identifier.message)
+
+    def create_file(self, path, content, message='create file'):
+        url = GithubURLs.get_contents(self.get_value('owner')['login'],
+                                      self.get_value('name'), path)
+
+        token = self.get_value('user').get_value('token')
+
+        payload = {
+            'message': message,
+            'content': b64encode(content)
+        }
+
+        Requester.put_request(url, token, payload)
+
+#+END_SRC

@@ -1,0 +1,51 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle user.py
+from requester import Requester
+from github_urls import GithubURLs
+from iterator import Iterator
+from base_class import BaseClass
+from repository import Repository
+from organization import Organization
+from logger import logger
+
+
+class User(BaseClass):
+    def __init__(self, token):
+        BaseClass.__init__(self)
+        self.details['token'] = token
+        self.update_details_by_request(GithubURLs.USER, token)
+
+    def get_repo(self, name):
+        try:
+            response = Requester.get_request(
+                GithubURLs.USER_REPOS, self.get_value('token'))
+            repo = Repository(Iterator.iterate_type_one(
+                response, 'name', name, self), self)
+            return repo
+
+        except Exception as identifier:
+            logger.debug('error retrieving repository from user')
+            logger.debug(str(identifier.message))
+
+    def get_org_by_id(self, org_id):
+        try:
+            response = Requester.get_request(
+                GithubURLs.USER_ORGS, self.get_value('token'))
+
+            org = Organization(Iterator.iterate_type_one(
+                response, 'id', org_id, self)['login'], self)
+            return org
+
+        except Exception as identifier:
+            logger.debug('error retrieving organization from user')
+            logger.debug(str(identifier.message))
+
+#+END_SRC
