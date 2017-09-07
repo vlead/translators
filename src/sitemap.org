@@ -2,6 +2,21 @@
 
    + deployment
      + [[file:deployment/index.org][Deploying the application on a server]]
+   + githubv3
+     + github
+       + [[file:githubv3/github/user.org][REST Interface for translators]]
+       + [[file:githubv3/github/requester.org][REST Interface for translators]]
+       + [[file:githubv3/github/repository.org][REST Interface for translators]]
+       + [[file:githubv3/github/organization.org][REST Interface for translators]]
+       + [[file:githubv3/github/logger.org][REST Interface for translators]]
+       + [[file:githubv3/github/iterator.org][REST Interface for translators]]
+       + [[file:githubv3/github/index.org][REST Interface for translators]]
+       + [[file:githubv3/github/github_urls.org][REST Interface for translators]]
+       + [[file:githubv3/github/github_exception.org][REST Interface for translators]]
+       + [[file:githubv3/github/files.org][REST Interface for translators]]
+       + [[file:githubv3/github/directory.org][REST Interface for translators]]
+       + [[file:githubv3/github/base_class.org][REST Interface for translators]]
+     + [[file:githubv3/index.org][Runtime of Application]]
    + openedx
      + data-model
        + [[file:openedx/data-model/index.org][Data Model for Content Delivery Adapters]]
