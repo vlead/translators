@@ -74,6 +74,7 @@
                "pre_build":[
                   "export http_proxy='http://proxy.iiit.ac.in:8080'",
                   "export https_proxy='http://proxy.iiit.ac.in:8080'",
+                  "apt-get update",
                   "apt-get install emacs24",
                   "cd /root/labs/translators"
                ],
