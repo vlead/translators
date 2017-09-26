@@ -72,10 +72,11 @@
 
                ],
                "pre_build":[
-
+                  "apt-get install emacs24",
+                  "cd /root/labs/translators"
                ],
                "build":[
-                  "cd /root/labs/translators;make build"
+                  "make build"
                ],
                "post_build":[
                   "mkdir -p /var/www/translators",
@@ -116,7 +117,6 @@
                "apt-get install nginx",
                "update-rc.d nginx defaults",
                "apt-get install build-essential",
-               "apt-get install emacs24",
                "apt-get install python",
                "apt-get install python-dev",
                "apt-get install python-pip",
