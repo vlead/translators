@@ -61,7 +61,7 @@
       "build_requirements":{
          "platform":{
             "os":"ubuntu",
-            "osVersion":"12",
+            "osVersion":"16",
             "arch":"x64",
             "service_pack":"",
             "installer":[
