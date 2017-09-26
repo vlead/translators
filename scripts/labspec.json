@@ -75,8 +75,7 @@
                   
                ],
                "build":[
-                  "cd /root/labs/translators",
-                  "make -k all"
+                  "cd /root/labs/translators; make -k all"
                ],
                "post_build":[
                   "mkdir -p /var/www/translators",
