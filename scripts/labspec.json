@@ -100,7 +100,7 @@
       "runtime_requirements":{
          "platform":{
             "os":"ubuntu",
-            "osVersion":"14",
+            "osVersion":"12",
             "arch":"x64",
             "servicepack":"",
             "hosting":"dedicated",
