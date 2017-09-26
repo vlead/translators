@@ -1,0 +1,17 @@
+#+TITLE: WSGI
+#+AUTHOR: Vlead
+
+#+BEGIN_SRC python :tangle wsgi.py
+  import sys, os
+
+  os.environ['http_proxy'] = 'http://proxy.iiit.ac.in:8080'
+  os.environ['https_proxy'] = 'http://proxy.iiit.ac.in:8080'
+
+  from runtime.rest.app import create_app
+  from runtime.config import app_config as config
+
+  application = create_app(config)
+
+  if __name__ == "__main__":
+          application.run(host='0.0.0.0')
+#+END_SRC

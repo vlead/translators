@@ -1,0 +1,165 @@
+{
+   "lab":{
+      "description":{
+         "name":"Translators",
+         "id":"translators",
+         "status":"working code",
+         "discipline":[
+
+         ],
+         "type":"",
+         "server-side":true,
+         "integration_level":6,
+         "developer":[
+            {
+               "name":"Sounak Pradhan",
+               "title":"",
+               "role":"Intern",
+               "organization":"VLEAD",
+               "institute":"IIIT Hyderabad",
+               "web":"",
+               "department":"Software Engg Research Lab (SERL)",
+               "contact":{
+                  "email":"sounak.pradhan@research.iiit.ac.in",
+                  "alternate_email":"",
+                  "mobile_number":"",
+                  "office_number":""
+               }
+            },
+            {
+               "name":"S. Shashank",
+               "title":"",
+               "role":"Intern",
+               "organization":"VLEAD",
+               "institute":"IIIT Hyderabad",
+               "web":"",
+               "department":"Software Engg Research Lab (SERL)",
+               "contact":{
+                  "email":"shashank.s@research.iiit.ac.in",
+                  "alternate_email":"",
+                  "mobile_number":"",
+                  "office_number":""
+               }
+            },
+            {
+               "name":"Arghya Bhattacharya",
+               "title":"",
+               "role":"Intern",
+               "organization":"VLEAD",
+               "institute":"IIIT Hyderabad",
+               "web":"",
+               "department":"Software Engg Research Lab (SERL)",
+               "contact":{
+                  "email":"arghya.b@research.iiit.ac.in",
+                  "alternate_email":"",
+                  "mobile_number":"",
+                  "office_number":""
+               }
+            }
+         ]
+      },
+      "build_requirements":{
+         "platform":{
+            "os":"ubuntu",
+            "osVersion":"12",
+            "arch":"x64",
+            "service_pack":"",
+            "installer":[
+
+            ],
+            "build_steps":{
+               "configure":[
+
+               ],
+               "pre_build":[
+
+               ],
+               "build":[
+                  "cd ../;make build"
+               ],
+               "post_build":[
+                  "mkdir -p /var/www/translators",
+                  "rsync -a build/code /var/www/translators/",
+                  "mkdir /var/www/logs",
+                  "chmod -R 777 /var/www/logs",
+                  "rm /etc/nginx/sites-enabled/default",
+                  "touch /etc/nginx/sites-available/translators",
+                  "ln -s /etc/nginx/sites-available/translators /etc/nginx/sites-enabled",
+                  "bash scripts/configure.sh",
+                  "service nginx restart",
+                  "cd /var/www/translators/code/",
+                  "gunicorn --bind 0.0.0.0:8000 --timeout 10000 --daemon wsgi",
+                  "service nginx restart"
+               ],
+               "status":[
+
+               ]
+            }
+         }
+      },
+      "runtime_requirements":{
+         "platform":{
+            "os":"ubuntu",
+            "osVersion":"14",
+            "arch":"x64",
+            "servicepack":"",
+            "hosting":"dedicated",
+            "memory":{
+               "max_required":"4gb",
+               "min_required":"2gb"
+            },
+            "storage":{
+               "min_required":"10gb"
+            },
+            "installer":[
+               "apt-get update",
+               "apt-get install nginx",
+               "update-rc.d nginx defaults",
+               "apt-get install build-essential",
+               "apt-get install emacs24",
+               "apt-get install python",
+               "apt-get install python-dev",
+               "apt-get install python-pip",
+               "apt-get install git"
+               "pip install gunicorn flask flask-cors pyyaml"
+            ],
+            "lab_actions":{
+               "init":[
+
+               ],
+               "shutdown":[
+
+               ],
+               "pause":[
+
+               ],
+               "resume":[
+
+               ],
+               "start":[
+               		"./start"
+               ],
+               "stop":[
+               		"./stop"
+               ],
+               "backup":[
+
+               ],
+               "restore":[
+
+               ],
+               "clean":[
+
+               ],
+               "stats":[
+
+               ],
+               "publish":[
+
+               ]
+            }
+         }
+      }
+   },
+   "template":"1.0"
+}
