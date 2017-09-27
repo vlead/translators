@@ -61,7 +61,7 @@
       "build_requirements":{
          "platform":{
             "os":"ubuntu",
-            "osVersion":"16",
+            "osVersion":"14",
             "arch":"x64",
             "service_pack":"",
             "installer":[
@@ -100,7 +100,7 @@
       "runtime_requirements":{
          "platform":{
             "os":"ubuntu",
-            "osVersion":"12",
+            "osVersion":"14",
             "arch":"x64",
             "servicepack":"",
             "hosting":"dedicated",
