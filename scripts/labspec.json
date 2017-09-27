@@ -79,7 +79,7 @@
                ],
                "post_build":[
                   "mkdir -p /var/www/translators",
-                  "rsync -a build/code /var/www/translators/",
+                  "rsync -a /root/labs/translators/build/code /var/www/translators/",
                   "mkdir /var/www/logs",
                   "chmod -R 777 /var/www/logs",
                   "rm /etc/nginx/sites-enabled/default",
