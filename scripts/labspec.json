@@ -78,14 +78,6 @@
                   "cd /root/labs/translators; make build"
                ],
                "post_build":[
-                  "apt-get update",
-                  "apt-get install nginx",
-                  "update-rc.d nginx defaults",
-                  "apt-get install build-essential",
-                  "apt-get install python",
-                  "apt-get install python-dev",
-                  "apt-get install python-pip",
-                  "apt-get install git",
                   "pip install gunicorn flask flask-cors pyyaml PyGithub",
                   "mkdir -p /var/www/translators",
                   "rsync -a /root/labs/translators/build/code /var/www/translators/",
