@@ -86,7 +86,7 @@
                   "apt-get install python-dev",
                   "apt-get install python-pip",
                   "apt-get install git",
-                  "pip install gunicorn flask flask-cors pyyaml PyGithub"
+                  "pip install gunicorn flask flask-cors pyyaml PyGithub",
                   "mkdir -p /var/www/translators",
                   "rsync -a /root/labs/translators/build/code /var/www/translators/",
                   "mkdir /var/www/logs",
