@@ -120,7 +120,7 @@
                "apt-get install python-dev",
                "apt-get install python-pip",
                "apt-get install git",
-               "pip install gunicorn flask flask-cors pyyaml"
+               "pip install gunicorn flask flask-cors pyyaml PyGithub"
             ],
             "lab_actions":{
                "init":[
