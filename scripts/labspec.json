@@ -85,7 +85,7 @@
                   "rm /etc/nginx/sites-enabled/default",
                   "touch /etc/nginx/sites-available/translators",
                   "ln -s /etc/nginx/sites-available/translators /etc/nginx/sites-enabled",
-                  "bash scripts/configure.sh",
+                  "bash /root/labs/translators/scripts/configure.sh",
                   "service nginx restart",
                   "cd /var/www/translators/code/",
                   "gunicorn --bind 0.0.0.0:8000 --timeout 10000 --daemon wsgi",
