@@ -22,8 +22,9 @@ api = Blueprint('APIs', __name__)
 #+NAME: index_route
 #+BEGIN_SRC python
 @api.route("/", methods=['GET'])
-def index(request): # redirect to index.org of documentation
-    pass
+def index():
+    return """<h1>Translators Running</h1>
+<a href="https://github.com/vlead/translators">https://github.com/vlead/translators</a>"""
 
 #+END_SRC
 
