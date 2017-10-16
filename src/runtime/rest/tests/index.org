@@ -1,0 +1,65 @@
+#+title: Test Setup
+#+AUTHOR: VLEAD
+#+DATE: [2017-06-26 Tue]
+#+SETUPFILE: ../../../org-templates/level-4.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Test Harness
+Starts a testing flask server which will be held after the test.
+** Imports
+#+BEGIN_SRC python :tangle harness.py
+from random import randint as random_id_generator
+import json
+from flask_testing import TestCase
+from runtime.rest.app import create_app
+from runtime.system.system import System
+
+#+END_SRC
+   
+** Class TestHarness
+This class's =setUp= method sets up the context for running
+tests on the =create_experiment= route. 
+
+ - Creates a flask server
+ - Gets the =user= from System
+ - Creates a random test =lab-specification= (payload)
+ - In =tearDown= it deletes the repository from github.
+
+#+BEGIN_SRC python :tangle harness.py
+class TestHarness(TestCase):
+    TESTING = True
+
+    def create_app(self):
+        app = create_app(__name__)
+        app.config['TESTING'] = True
+        return app
+
+    def setUp(self):
+        user = System.get_user()
+        self.org = System.get_org(user)
+        self.random_id = "E" + str(random_id_generator(100000, 1000000))
+        self.repo_name = 'test-repository'
+        self.payload = json.dumps({
+            "experiment": {
+                "id": self.random_id,
+                "name": self.repo_name,
+                "overview": "Test overview",
+                "sections": [
+                    "Introduction",
+                    "Objective"
+                ]},
+            "content-type": "org"
+        })
+
+    def tearDown(self):
+        System.delete_repo(self.org, self.repo_name)
+
+#+END_SRC
+
+* Package
+
+#+BEGIN_SRC python :eval no :tangle __init__.py
+print "runtime.rest.tests package"
+#+END_SRC

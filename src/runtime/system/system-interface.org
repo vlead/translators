@@ -22,24 +22,111 @@ class SystemInterface():
         pass
 
 #+END_SRC
-
+   
 ** Methods
-
-#+NAME: methods_system_interface
+*** create_experiment
++ There are three =staticmethods= in SytemInterface class. First one is =create_experiment=. 
++ The method interacts with =System= package and get =user= and =organisation= by the details provided in =Config=. 
++ After that, it checks for the existence of the repository given as input to the API.
++ If repo already exists, that repo is updated using =update_experiment= method, described in the second part.
++ Else, it will create a git version controlled repository in =github= and will create files with the directory structure as specified in sections of the experiment.
++ =makefile= and =init.sh= files are shell scripts which are suppose to build the experiment.
++ =README.org= contains steps to develop the experiment.
++ =/src= directory is created which contains org files for each section(specification) and inside that it has =simulation= directory which is supposed to contain files for simulation in experiment.
+#+NAME: create_experiment
 #+BEGIN_SRC python
     @staticmethod
     def create_experiment(experiment_dict, content_type):
         user = System.get_user()
         org = System.get_org(user)
-        repo_name = experiment_dict['name'] + " - " + experiment_dict['id']
-        System.create_repo(org, repo_name)
+        repo_name = experiment_dict['name'].lower().replace(" ", "-") + "-" + experiment_dict['id']
         repo = System.get_repo(org, repo_name)
-        # add makefile here
-        # check makefile contents
-        System.create_file(repo, "README." + content_type, "")
-        for section in experiment_dict['sections']:
-            System.create_file(repo, section + "." + content_type, "/src")
+        if repo is not None:
+            SystemInterface.update_experiment(experiment_dict, content_type, repo)
+        else:
+            repo = System.create_repo(org, repo_name)
+            # add makefile here
+            # check makefile contents
+            System.create_file(repo, "makefile", Config.MAKEFILE(experiment_dict['id']))
+            System.create_file(repo, "init.sh", Config.INIT)
+            System.create_file(repo, "README.org", "* Overview\n+ " + experiment_dict['overview'] + Config.README)
+            System.create_file(repo, "src/index.org", Config.INDEX(experiment_dict['id'], experiment_dict['name'], experiment_dict['sections']))
+            # add the specification file
+            for section in experiment_dict['sections']:
+                System.create_file(repo, "src/" + section.lower().replace(" ", "-") + "-" + experiment_dict['id'] + "/" + section.lower().replace(" ", "-") + "-" + experiment_dict['id'] + "." + content_type)
 
+#+END_SRC
+*** update_experiment
++ Second one is =update_experiment=. 
++ It is called by =create_experiment= when the repo already exists.
++ The method extracts sections(specifications) and compare it with the existing sections(specifications).
++ Those who are new gets added, existing which are present in new specification remains intact and rest are deleted.
+
+#+NAME: update_experiment
+#+BEGIN_SRC python
+    @staticmethod
+    def update_experiment(experiment_dict, content_type, repo):
+        filenames_spec = experiment_dict['sections']
+
+        for i in range(len(filenames_spec)):
+            filenames_spec[i] = filenames_spec[i].lower().replace(" ", "-") + "-" + experiment_dict['id']
+            print filenames_spec[i]
+
+        System.delete_file(repo, "src/index.org")
+
+        filenames_repo = System.get_file(repo, "src")
+
+        only_content_name = list(map(lambda content: content.get_value("name"), filenames_repo))
+
+        add = []
+        for filename_spec in filenames_spec:
+            if filename_spec not in only_content_name:
+                add.append(filename_spec)
+
+        for section in add:
+            print section
+            print "form add"
+        
+        delete = []
+        for filename_repo in filenames_repo:
+            if filename_repo.get_value("name") not in filenames_spec:
+                delete.append(filename_repo)
+        
+        for section in delete:
+            print section
+            print "from delete"
+
+        print "INITIATED ADD PROCESS"
+
+        for section in add:
+            System.create_file(repo, "src/" + section + "/" + section + "." + content_type)
+            print section + " added to repository"
+
+        print "INITIATED DELETE PROCESS"
+        
+        for section in delete:
+            section.delete()
+
+        print "CREATING index.org"
+
+        System.create_file(repo, "src/index.org", Config.INDEX(experiment_dict['id'], experiment_dict['name'], experiment_dict['sections']))
+        
+#+END_SRC
+
+*** create_skeleton
+
+#+NAME: create_skeleton
+#+BEGIN_SRC python
+    @staticmethod
+    def create_skeleton(experiment_dict):
+        System.create_skeleton(experiment_dict)
+
+#+END_SRC
+*** create_openedx_lab
++ Third one is =create_openedx_lab=. 
++ It creates a gzip file which can be directly imported in openedx.
+#+NAME: create_openedx_lab
+#+BEGIN_SRC python
     @staticmethod
     def create_openedx_lab(labname, data_json):
         # Should be modified if the name can't be unique
@@ -67,5 +154,8 @@ import os
 #+BEGIN_SRC python :tangle system_interface.py :eval no :noweb yes
 <<imports_system_interface>>
 <<class_system_interface>>
-<<methods_system_interface>>
+<<create_experiment>>
+<<create_skeleton>>
+<<update_experiment>>
+<<create_openedx_lab>>
 #+END_SRC

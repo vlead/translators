@@ -24,7 +24,6 @@ class System():
 
 #+END_SRC
 
-
 ** Methods
    These methods are used to create the experiments and labs. The versioning of
    an experiment is done using the Github API and the configuration parameters
@@ -32,48 +31,122 @@ class System():
    structure is generated using the structure generator for open edX module and the
    corresponding configuration parameters.
 
-#+NAME: methods_system
+*** get_user
++ Returns the user based on the personal access token from Config.
+#+NAME: get_user
 #+BEGIN_SRC python
     @staticmethod
     def get_user():
-        return Github(Config.USER_KEY).get_user()
+        return Github(Config.USER_KEY)
 
+#+END_SRC
+
+*** get_org
++ Returns the org based on the ORG-ID from Config.
+#+NAME: get_org
+#+BEGIN_SRC python
     @staticmethod
     def get_org(user):
-        for org in user.get_orgs():
-            if org.id == Config.ORG_ID:
-                return org
+        return user.get_org_by_id(Config.ORG_ID)
 
+#+END_SRC
+
+*** create_repo
++ Creates repo in the org.
+#+NAME: create_repo
+#+BEGIN_SRC python
     @staticmethod
     def create_repo(org, name):
-        org.create_repo(name)
+        return org.create_repo(name)
 
+#+END_SRC
+
+*** delete_repo
++ Deletes repo in the org.
+#+NAME: delete_repo
+#+BEGIN_SRC python
+    @classmethod
+    def delete_repo(cls, org, repo_name):
+        repo = cls.get_repo(org, repo_name)
+        if repo is not None:
+            repo.delete()
+
+#+END_SRC
+
+*** get_repo
++ Returns the repo with specified name in the org.
+#+NAME: get_repo
+#+BEGIN_SRC python
     @staticmethod
     def get_repo(org, name):
-        for repo in org.get_repos():
-            if repo.name == name:
-                return repo
+        return org.get_repo(name)
 
+#+END_SRC
+
+*** get_file
++ Returns the files in the given path.
+#+NAME: get_file
+#+BEGIN_SRC python
     @staticmethod
-    def create_file(repo, new_file, path):
-        file_path = path + "/" + new_file
-        file_content = "This is the " + new_file + " file"
-        repo.create_file(file_path, new_file + " file", file_content)
+    def get_file(repo, path):
+        return repo.get_contents(path)
 
+#+END_SRC
+
+*** create_file
++ Creates file in the repo with specified name and the path.
+#+NAME: create_file
+#+BEGIN_SRC python
+    @staticmethod
+    def create_file(repo, path, content = None):
+        if content is None:
+            content = "This is the file from " + path
+        repo.create_file(path, content, path + " file")
+
+#+END_SRC
+
+*** delete_file
++ Deletes the file with specified path.
+#+NAME: delete_file
+#+BEGIN_SRC python
+    @staticmethod
+    def delete_file(repo, path):
+        repo.delete_file(path, "delete file from " + path)
+
+#+END_SRC
+
+*** gen_json_file
+#+NAME: gen_json_file
+#+BEGIN_SRC python
     @staticmethod
     def gen_json_file(json_dump, filename):
         # The file created is temporary ?
         with open(filename, 'w+') as fp:
             json.dump(json_dump, fp)
 
+#+END_SRC
+
+*** gen_lab_dir
+#+NAME: gen_lab_dir
+#+BEGIN_SRC python
     @staticmethod
     def gen_lab_dir(labname):
         os.mkdir(Config.LABPATH+"/"+labname)
 
+#+END_SRC
+    
+*** del_lab_dir
+#+NAME: del_lab_dir
+#+BEGIN_SRC python
     @staticmethod
     def del_lab_dir(labname):
         rmtree(Config.LABPATH+"/"+labname)
 
+#+END_SRC
+    
+*** pack_lab
+#+NAME: pack_lab
+#+BEGIN_SRC python
     @staticmethod
     def pack_lab(labname):
         command = "tar -czf "
@@ -81,6 +154,11 @@ class System():
         command += Config.LABPATH + "/" + labname
         os.system(command)
     
+#+END_SRC
+
+*** execute_python
+#+NAME: execute_python
+#+BEGIN_SRC python
     @staticmethod
     def execute_python(script, args):
         command = "python " + script
@@ -89,22 +167,45 @@ class System():
         os.system(command)
 
 #+END_SRC
+*** create_skeleton
+#+NAME: create_skeleton
+#+BEGIN_SRC python
+    @staticmethod
+    def create_skeleton(experiment_dict):
+        content = Config.CREATE_SKELETON(experiment_dict)
+        f = open(Config.SKELETON_PATH + '/' + experiment_dict['name'] + '-' + experiment_dict['id'] + '.html', 'w')
+        f.write(content)
+        f.close()
+
+#+END_SRC
 
 ** Imports
    The system requires access to the os library
 #+NAME: imports_system
 #+BEGIN_SRC python
 from runtime.config.config import Config
-
-from github import Github
+from githubv3.github import Github
 import os, json
 from shutil import rmtree
 
 #+END_SRC
-
+   
 * Tangle                                                        :boilerplate:
 #+BEGIN_SRC python :tangle system.py :eval no :noweb yes
 <<imports_system>>
 <<class_system>>
-<<methods_system>>
+<<get_user>>
+<<get_org>>
+<<create_repo>>
+<<delete_repo>>
+<<get_repo>>
+<<get_file>>
+<<create_file>>
+<<delete_file>>
+<<gen_json_file>>
+<<gen_lab_dir>>
+<<del_lab_dir>>
+<<create_skeleton>>
+<<pack_lab>>
+<<execute_python>>
 #+END_SRC

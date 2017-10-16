@@ -1,0 +1,44 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle files.py
+from base_class import BaseClass
+from requester import Requester
+from github_urls import GithubURLs
+from base64 import b64decode
+from logger import logger
+
+
+class File(BaseClass):
+    def __init__(self, details, repo):
+        BaseClass.__init__(self)
+        self.set_value('repository', repo)
+        self.update_details(details)
+        try:
+            self.set_value('content', b64decode(self.get_value('content')))
+        except Exception as identifier:
+            logger.debug('file has no content')
+
+    def delete(self, message='delete file'):
+        url = GithubURLs.get_contents(self.get_value('repository').get_value('owner')['login'],
+                                      self.get_value(
+                                      'repository').get_value('name'),
+                                      self.get_value('path'))
+
+        token = self.get_value('repository').get_value(
+            'user').get_value('token')
+
+        payload = {
+            'message': message,
+            'sha': self.get_value('sha')
+        }
+
+        Requester.delete_request(url, token, payload)
+
+#+END_SRC

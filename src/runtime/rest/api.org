@@ -19,6 +19,8 @@ api = Blueprint('APIs', __name__)
 
 
 ** index
+This route is the index route which takes the user to thr index.org of the documentation.
+
 #+NAME: index_route
 #+BEGIN_SRC python
 @api.route("/", methods=['GET'])
@@ -30,7 +32,7 @@ def index():
 
 
 ** Create an experiment structure from specified format
-
+   
 *** API design
     
     - URL :: /create_experiment
@@ -58,13 +60,92 @@ def index():
     - SUCCESS Response :: 200 OK
     - ERROR Response :: 400 Invalid Lab Spec
 
-
+                        
 *** =create_experiment= API
+The route =/create_experiment= is a route of method =POST= which will build a
+GitHub repository in a particular organisation to author the content of the resources.
 #+NAME: create_experiment_route
 #+BEGIN_SRC python
 @api.route("/create_experiment", methods=['POST'])
 def create_experiment():
     if request.method == 'POST':
+#+END_SRC
+
+Then it needs to covert the data recieved from the user as =JSON= to Python =dict=
+for passing it to =System Interface=.
+#+NAME: json_to_dict
+#+BEGIN_SRC python
+        data_json = json.dumps(request.get_json())
+        data_dict = yaml.safe_load(data_json)
+        experiment_dict = {
+            'id': data_dict['experiment']['id'],
+            'name': data_dict['experiment']['name'],
+            'overview': data_dict['experiment']['overview'],
+            'sections': data_dict['experiment']['sections']
+        }
+	if 'content-type' in data_dict.keys():
+	    content = data_dict['content-type']
+	else:
+	    content = 'org'    
+#+END_SRC
+
+And finally pass the converted data to the =System Interface= for working on the data.
+#+NAME: pass_to_SI
+#+BEGIN_SRC python
+        try:
+            SystemInterface.create_experiment(experiment_dict, content)
+            # Modify this response
+            return make_response("success: OK", 200, None)
+        except Exception as e:
+            # Modify this response
+            return make_response(str(e), 400, None)
+
+#+END_SRC
+
+** Create an experiment structure from specified format
+   
+*** API design
+    
+    - URL :: /create_skeleton
+    - METHOD :: POST
+    - PAYLOAD ::
+         #+BEGIN_EXAMPLE
+{
+        "experiment" : {
+                     "id": "e99847",
+                     "name": "Parallel and distributed processing",
+                     "overview": "This deals with eiciting how parallel and distributed processing is done",
+                     "sections" : [
+                                "Introduction",
+                                "Objective",
+                                "Tutorial",
+                                "Illustration",
+                                "Procedure",
+                                "Experiment",
+                                "Observations",
+                                "Assignment",
+                                "References"]},
+        "content-type": "org"
+}
+         #+END_EXAMPLE
+    - SUCCESS Response :: 200 OK
+    - ERROR Response :: 400 Invalid Lab Spec
+
+                        
+*** =create_skeleton= API
+The route =/create_skeleton= is a route of method =POST= which will
+build a skeleton html with all the appropriate hooks to the resources.
+#+NAME: create_skeleton_route
+#+BEGIN_SRC python
+@api.route("/create_skeleton", methods=['POST'])
+def create_skeleton():
+    if request.method == 'POST':
+#+END_SRC
+
+Then it needs to covert the data recieved from the user as =JSON= to Python =dict=
+for passing it to =System Interface=.
+#+NAME: json_to_dict_1
+#+BEGIN_SRC python
         data_json = json.dumps(request.get_json())
         data_dict = yaml.safe_load(data_json)
         experiment_dict = {
@@ -74,16 +155,20 @@ def create_experiment():
             'sections': data_dict['experiment']['sections']
         }
         content = data_dict['content-type']
-        try:
-            SystemInterface.create_experiment(experiment_dict, content)
-            # Modify this response
-            return make_response("success: OK", 200, None)
-        except:
-            # Modify this response
-            return make_response("error: Invalid Lab Spec", 400, None)
-
 #+END_SRC
 
+And finally pass the converted data to the =System Interface= for working on the data.
+#+NAME: pass_to_SI_1
+#+BEGIN_SRC python
+        try:
+            SystemInterface.create_skeleton(experiment_dict)
+            # Modify this response
+            return make_response("success: OK", 200, None)
+        except Exception as e:
+            # Modify this response
+            return make_response(str(e), 400, None)
+
+#+END_SRC
 
 ** Create an OpenedX structure from specified format
 
@@ -117,28 +202,28 @@ def create_experiment():
 
 
 *** =create_openedx_lab= API
-#+NAME: create_experiment_route
+#+NAME: create_openedx_lab_route
 #+BEGIN_SRC python
 @api.route("/create_openedx_lab", methods=['POST'])
 def create_openedx_lab():
     if request.method == 'POST':
         data_json = request.get_json()
         lab_dict = yaml.safe_load(json.dumps(data_json))
-        lab_id = lab_dict['course']['id']
-        dname = lab_dict['course']['display_name'] # Assumming '-' separated name
+        lab_id = lab_dict['experiment']['id']
+        dname = lab_dict['experiment']['name'].replace(" ", "-")
         labname = dname + "-" + lab_id
         try:
             SystemInterface.create_openedx_lab(labname, data_json)
             # Modify this response
             return make_response("success: OK", 200, None)
-        except:
+        except Exception as e:
             # Modify this response
-            return make_response("error: Invalid Lab Spec", 400, None)
+            return make_response(str(e), 400, None)
 
 #+END_SRC
 
 
-
+    
 * Imports
 #+NAME: imports_api
 #+BEGIN_SRC python
@@ -151,11 +236,16 @@ from runtime.system.system_interface import *
 
 #+END_SRC
 
-
 * Tangle
 #+BEGIN_SRC python :tangle api.py :eval no :noweb yes
 <<imports_api>>
 <<blueprint>>
 <<index_route>>
 <<create_experiment_route>>
+<<json_to_dict>>
+<<pass_to_SI>>
+<<create_skeleton_route>>
+<<json_to_dict_1>>
+<<pass_to_SI_1>>
+<<create_openedx_lab_route>>
 #+END_SRC

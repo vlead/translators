@@ -1,0 +1,33 @@
+#+title: Test Check Experiment
+#+AUTHOR: VLEAD
+#+DATE: [2017-06-27 Tue]
+#+SETUPFILE: ../../../../org-templates/level-4.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Test
+=TestCheckCreate= invokes the =update_experiment=.
+** Imports
+#+BEGIN_SRC python :tangle test_check_create.py
+from runtime.rest.tests.harness import TestHarness
+
+#+END_SRC
+
+** Test Case
+
+   Imports the TestHarness which sets up the test-server and lab-specifications.
+   This test makes a post request and checks the basic create experiment functionality lab-specification.
+
+#+BEGIN_SRC python :tangle test_check_create.py
+class TestCheckCreate(TestHarness):
+
+    def test_check_create(self):
+        print "test_check_create"
+
+        response = self.client.post("/create_experiment", data=self.payload, content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+
+#+END_SRC
+   

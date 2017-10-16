@@ -22,7 +22,7 @@ the relative path in which the packaged lab must be stored.
 class Config:
 
     # Github admin user key
-    USER_KEY = "c015c625c82ad0611564e7f4dbf4c3c49c9180b7"
+    USER_KEY = "ed40cebc776d2b00834d7fba60ccbd13beaae2b6"
 
     # Github org ID
     ORG_ID = 26247085
@@ -39,6 +39,128 @@ class Config:
     # Openedx lab path
     LABPATH = "."
 
+    # Path for Skeleton
+    SKELETON_PATH = "."
+
+    # INIT
+    INIT = """#!/bin/bash
+
+if [ -d literate-tools ]; then
+    echo "literate-tools already present"
+    (cd literate-tools; git checkout readtheorg; git pull)
+else
+    (git clone https://github.com/vlead/literate-tools.git; cd literate-tools; git checkout readtheorg)
+fi
+
+if [ -L tangle-make ]; then
+    echo "symlinked makefile already present"
+else
+    ln -sf literate-tools/makefile tangle-make
+fi"""
+
+    # Makefile
+    @staticmethod
+    def MAKEFILE(id):
+        content = """#SHELL := /bin/bash
+
+CODE_DIR=build/code
+DOCS_DIR=build/docs
+PWD=$(shell pwd)
+STATUS=0
+PUSH_DIR=$(shell basename `pwd`)
+
+all:  post-build
+
+init:
+	chmod u+x init.sh
+	./init.sh
+
+build: init
+	make -f tangle-make -k all
+
+post-build: build
+	if [ ! -d "${DOCS_DIR}/simulation-"""+id+"""/static/img" ]; then mkdir -p ${DOCS_DIR}/simulation-"""+id+"""/static/img; fi
+	if [ ! -d "${DOCS_DIR}/simulation-"""+id+"""/static/js" ]; then mkdir -p ${DOCS_DIR}/simulation-"""+id+"""/static/js; fi
+	if [ ! -d "${DOCS_DIR}/simulation-"""+id+"""/static/css" ]; then mkdir -p ${DOCS_DIR}/simulation-"""+id+"""/static/css; fi
+	if [ ! -d "${CODE_DIR}/simulation-"""+id+"""/static/img" ]; then mkdir -p ${CODE_DIR}/simulation-"""+id+"""/static/img; fi
+	if [ ! -d "${CODE_DIR}/simulation-"""+id+"""/static/js" ]; then mkdir -p ${CODE_DIR}/simulation-"""+id+"""/static/js; fi
+	if [ ! -d "${CODE_DIR}/simulation-"""+id+"""/static/css" ]; then mkdir -p ${CODE_DIR}/simulation-"""+id+"""/static/css; fi
+	rsync -a ${DOCS_DIR}/simulation-"""+id+"""/static/img/ ${CODE_DIR}/simulation-"""+id+"""/static/img/
+	rsync -a ${DOCS_DIR}/simulation-"""+id+"""/static/js/ ${CODE_DIR}/simulation-"""+id+"""/static/js/
+	rsync -a ${DOCS_DIR}/simulation-"""+id+"""/static/css/ ${CODE_DIR}/simulation-"""+id+"""/static/css/
+	rm -rf ${PUSH_DIR}
+	mkdir ${PUSH_DIR}
+	rsync -a ${DOCS_DIR}/ ${PUSH_DIR}
+	rsync -a ${CODE_DIR}/simulation-"""+id+""" ${PUSH_DIR}
+
+clean:	
+	rm -rf ${PUSH_DIR}
+	make -f tangle-make clean"""
+        return content
+
+    # README.org
+    README = """\n* Simulation
++ Use the directory =src/simulation= for the simulation files.
++ Add a directory =static= in =src/simulation= for all the static files.
++ The =static= directory must have three directories =img=, =js=, =css= for the respective files.\n* NOTE
++ Please stick to the naming conventions, to build the resources without any error."""
+
+    # src/index.org
+    @staticmethod
+    def INDEX(id, name, sections):
+        content = """#+TITLE: Index
+,#+AUTHOR: Vlead
+
+,* """ + name
+        for section in sections:
+            filename = section.lower().replace(' ','-') + "-" + id
+            content += """
+,** [[./""" + filename + "/" + filename + ".org][" + section + "]]"
+        return content
+
+    @staticmethod
+    def CREATE_SKELETON(experiment_dict):
+        nameid = experiment_dict['name'].lower() + '-' + experiment_dict['id']
+        content = """<html>
+    <head>
+        <title>""" + experiment_dict['name'] + """</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    </head>
+<body>
+    <div class="container-fluid" style="padding: 0">
+        <div class="row align-middle" style="margin: 0; padding: 1.5em 0; background-color:ghostwhite">
+            <div class="col-3" style="display:flex; justify-content: center;">
+                <img src="https://www.iiit.ac.in/img/iiit-new.png" style="width: 70%; height: 100">
+            </div>
+            <div class="col-9" style="padding: 0; align-items: center; display: flex; justify-content: center;">
+                <h1 class="text-center" style="margin: 0;">""" + experiment_dict['name'] + """</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3" style="background-color: whitesmoke">"""
+
+        for section in experiment_dict['sections']:
+            url = "http://content-server.vlabs.ac.in/static/" + nameid + "/" + section.lower() + "-" + experiment_dict['id'] + "/" + section.lower() + '-' + experiment_dict['id'] + ".html"
+            content += """
+                <div class="row" style="margin: 15px;">
+                    <a href='#' onclick="$('#content').load('""" + url + """')" style="font-size: 30px;">""" + section + """</a>
+                </div>"""
+                
+        content += """
+            </div>
+            <div class="col-9" id="content" style="padding: 1em">
+
+            </div>
+        </div>
+    </div>
+</body>
+</html>"""
+        return content
+    
     # use Exceptions module here to show
     # "Cannot initialize error"
     def __init__(self):

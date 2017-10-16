@@ -1,0 +1,34 @@
+#+title: Test Update Experiment
+#+AUTHOR: VLEAD
+#+DATE: [2017-06-27 Tue]
+#+SETUPFILE: ../../../../org-templates/level-4.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Test
+=TestCheckUpdate= invokes the =update_experiment=.
+** Imports
+#+BEGIN_SRC python :tangle test_check_update.py
+from runtime.rest.tests.harness import TestHarness
+
+#+END_SRC
+
+** Test Case
+
+   Imports the TestHarness which sets up the test-server and lab-specifications.
+   This test makes a post request with a slight update in lab-specification.
+
+#+BEGIN_SRC python :tangle test_check_update.py
+class TestCheckUpdate(TestHarness):
+
+    def test_check_update(self):
+        print "test_check_update"
+
+        self.client.post("/create_experiment", data=self.payload, content_type='application/json')
+        
+        response = self.client.post("/create_experiment", data=self.payload.replace("Objective", "experiment"), content_type='application/json')
+
+        self.assertEqual(response.status_code, 200)
+
+#+END_SRC

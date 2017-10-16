@@ -1,0 +1,12 @@
+#+TITLE: Runtime of Application
+#+AUTHOR: VLEAD
+#+SETUPFILE: ../org-templates/level-1.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle __init__.py
+print "githubv3 package"
+
+#+END_SRC

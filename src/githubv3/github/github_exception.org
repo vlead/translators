@@ -1,0 +1,72 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle github_exception.py
+class GithubException(Exception):
+    def __init__(self, message, status_code, headers):
+        Exception.__init__(self)
+        self.message = message
+        self.status_code = status_code
+        self.headers = headers
+
+    def __repr__(self):
+        return "message: {}, status_code:{}".format(self.message, self.status_code)
+
+
+class BadRequestException(GithubException):
+    def __init__(self, message, status_code, headers):
+        GithubException.__init__(self, message, status_code, headers)
+
+
+class BadCredentialsException(GithubException):
+    def __init__(self, message, status_code, headers):
+        GithubException.__init__(self, message, status_code, headers)
+
+
+class RateLimitExceededException(GithubException):
+    def __init__(self, message, status_code, headers):
+        GithubException.__init__(self, message, status_code, headers)
+
+
+class ForbiddenException(GithubException):
+    def __init__(self, message, status_code, headers):
+        GithubException.__init__(self, message, status_code, headers)
+
+
+class UnknownObjectException(GithubException):
+    def __init__(self, message, status_code, headers):
+        GithubException.__init__(self, message, status_code, headers)
+
+
+class UnprocessableEntityException(GithubException):
+    def __init__(self, message, status_code, headers):
+        GithubException.__init__(self, message, status_code, headers)
+
+
+EXCEPTION_CODE_MAP = {
+    400: {
+        'problems parsing json': BadRequestException,
+        'body should be a json object': BadRequestException
+    },
+    401: {
+        'bad credentials': BadCredentialsException
+    },
+    403: {
+        'api rate limit': RateLimitExceededException,
+        'maximum number of login attempts': ForbiddenException
+    },
+    404: {
+        'not found': UnknownObjectException
+    },
+    422: {
+        'validation failed': UnprocessableEntityException
+    }
+}
+
+#+END_SRC

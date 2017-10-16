@@ -1,0 +1,56 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle organization.py
+from requester import Requester
+from base_class import BaseClass
+from github_urls import GithubURLs
+from repository import Repository
+from logger import logger
+
+
+class Organization(BaseClass):
+    def __init__(self, login, user):
+        BaseClass.__init__(self)
+        self.set_value('user', user)
+        self.update_details_by_request(GithubURLs.org(
+            login), self.get_value('user').get_value('token'))
+
+    def __repr__(self):
+        return "ID : {}".format(self.get_value('id'))
+
+    def get_repo(self, name):
+        try:
+            url = GithubURLs.get_repo(self.get_value('login'), name)
+            token = self.get_value('user').get_value('token')
+
+            repo = Repository(Requester.get_request(url, token).json(),
+                              self.get_value('user'))
+            return repo
+
+        except Exception as identifier:
+            logger.debug(
+                'error getting repository from organization: ' + str(self.get_value('id')))
+            logger.debug(identifier.message)
+
+    def create_repo(self, name):
+        url = GithubURLs.create_repo_in_org(self.get_value('login'))
+        token = self.get_value('user').get_value('token')
+        payload = {
+            "name": name
+        }
+
+        repo = Repository(Requester.post_request(url,
+                                                 payload,
+                                                 token).json(),
+                          self.get_value('user'))
+
+        return repo
+
+#+END_SRC

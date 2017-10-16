@@ -1,0 +1,97 @@
+#+TITLE: REST Interface for translators
+#+AUTHOR: VLEAD
+#+DATE: [2016-06-07 Tue]
+#+SETUPFILE: ../../org-templates/level-2.org
+#+TAGS: boilerplate(b)
+#+EXCLUDE_TAGS: boilerplate
+#+OPTIONS: ^:nil
+
+* Tangle
+#+BEGIN_SRC python :eval no :tangle requester.py
+import json
+import requests
+from github_urls import GithubURLs
+from github_exception import EXCEPTION_CODE_MAP
+from logger import logger
+
+
+class Requester(object):
+    def __init__(self):
+        pass
+
+    @classmethod
+    def get_request(cls, url, token):
+        request_header = {
+            'Authorization': 'token' + ' ' + str(token)
+        }
+
+        response = requests.get(GithubURLs.BASE_URL +
+                                url, headers=request_header)
+
+        if response.status_code >= 400:
+            cls.raise_exception(response)
+
+        return response
+
+    @classmethod
+    def delete_request(cls, url, token, payload=None, content_type='application/json'):
+        request_header = {
+            'Authorization': 'token' + ' ' + token,
+            'Content-Type': content_type
+        }
+
+        response = requests.delete(GithubURLs.BASE_URL + url, headers=request_header,
+                                   data=json.dumps(payload))
+
+        if response.status_code >= 400:
+            cls.raise_exception(response)
+
+        return response
+
+    @classmethod
+    def post_request(cls, url, payload, token, content_type='application/json'):
+        request_header = {
+            'Authorization': 'token' + ' ' + token,
+            'Content-Type': content_type
+        }
+
+        response = requests.post(GithubURLs.BASE_URL + url,
+                                 headers=request_header, data=json.dumps(payload))
+
+        if response.status_code >= 400:
+            cls.raise_exception(response)
+
+        return response
+
+    @classmethod
+    def put_request(cls, url, token, payload, content_type='application/json'):
+        request_header = {
+            'Authorization': 'token' + ' ' + token,
+            'Content-Type': content_type
+        }
+
+        response = requests.put(
+            GithubURLs.BASE_URL + url, headers=request_header, data=json.dumps(payload))
+
+        if response.status_code >= 400:
+            cls.raise_exception(response)
+
+        return response
+
+    @staticmethod
+    def raise_exception(response):
+        status_code = response.status_code
+        message = response.json()['message'].lower()
+        headers = response.headers
+
+        exception = Exception
+
+        exceptions_with_status_code = EXCEPTION_CODE_MAP[status_code]
+
+        for excpetion_message in exceptions_with_status_code:
+            if message.startswith(excpetion_message):
+                exception = exceptions_with_status_code[excpetion_message]
+
+        raise exception(message, status_code, headers)
+
+#+END_SRC
