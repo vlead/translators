@@ -154,7 +154,10 @@ for passing it to =System Interface=.
             'overview': data_dict['experiment']['overview'],
             'sections': data_dict['experiment']['sections']
         }
-        content = data_dict['content-type']
+	if 'content-type' in data_dict.keys():
+	    content = data_dict['content-type']
+	else:
+	    content = 'org'
 #+END_SRC
 
 And finally pass the converted data to the =System Interface= for working on the data.
