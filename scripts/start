@@ -1,0 +1,4 @@
+#!/bin/bash
+cd /var/www/translators/code
+gunicorn --bind 0.0.0.0:8000 --timeout 10000 --daemon wsgi
+service nginx start
