@@ -9,6 +9,8 @@ echo "}" >> /etc/nginx/sites-enabled/translators
 echo "import sys, os" > /var/www/translators/code/wsgi.py
 echo "from runtime.rest.app import create_app" >> /var/www/translators/code/wsgi.py
 echo "from runtime.config import app_config as config" >> /var/www/translators/code/wsgi.py
+echo "os.environ['http_proxy'] = ''" >> /var/www/translators/code/wsgi.py  
+echo "os.environ['https_proxy'] = ''" >> /var/www/translators/code/wsgi.py  
 echo "application = create_app(config)" >> /var/www/translators/code/wsgi.py
 echo "if __name__ == '__main__':" >> /var/www/translators/code/wsgi.py
 echo "    application.run(host='0.0.0.0')" >> /var/www/translators/code/wsgi.py
